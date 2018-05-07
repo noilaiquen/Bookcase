@@ -231,7 +231,7 @@ const styles = StyleSheet.create({
    labelStyle: {
       color: darkColor,
       fontFamily: appFont,
-      fontWeight: '600',
+      fontWeight: '100',
       fontSize: 16,
    },
    inputStyle: {

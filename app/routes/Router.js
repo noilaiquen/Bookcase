@@ -9,7 +9,7 @@ import Profile from '../screens/Profile';
 import ViewBook from '../screens/ViewBook';
 import Add from '../screens/Add';
 import TabBarComponent from '../components/TabBarComponent';
-import { appTextColor } from '../config/constants';
+import { appTextColor, appFont } from '../config/constants';
 
 export const Tabs = TabNavigator({
    Bookcase: {
@@ -91,6 +91,7 @@ export const Tabs = TabNavigator({
       inactiveTintColor: '#9E9E9E',
       labelStyle: {
          fontSize: 8,
+         fontFamily: appFont,
          marginTop: 0,
          marginBottom: 0
       },
