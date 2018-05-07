@@ -8,7 +8,7 @@ import {
    Keyboard
 } from 'react-native';
 import { Icon } from 'react-native-elements';
-import { appFont, darkColor, appTextColor, appFontBold } from '../config/constants';
+import { appFont, darkColor, appTextColor } from '../config/constants';
 
 export default class BookcaseListItem extends Component {
    render() {
@@ -76,7 +76,8 @@ const styles = StyleSheet.create({
       paddingLeft: 10
    },
    title: {
-      fontFamily: appFontBold,
+      fontFamily: appFont,
+      // fontWeight: '600',
       fontSize: 16,
       color: darkColor
    },

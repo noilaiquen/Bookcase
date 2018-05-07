@@ -4,7 +4,7 @@ import {
    TouchableOpacity
 } from 'react-native';
 import { Icon, Header as HeaderRNE } from 'react-native-elements';
-import { appFont, appFontBold, appColor } from '../config/constants';
+import { appFont, appColor } from '../config/constants';
 
 const HeaderLeft = ({ icon, text, onPress }) => (
    <TouchableOpacity
@@ -82,7 +82,8 @@ const styles = {
    headerCenter: {
       color: '#fff',
       fontSize: 20,
-      fontFamily: appFontBold
+      fontFamily: appFont,
+      fontWeight: '600',
    },
    headerLeftContainer: {
       flexDirection: 'row', 

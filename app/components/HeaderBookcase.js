@@ -6,7 +6,7 @@ import {
    TouchableWithoutFeedback
 } from 'react-native';
 import { SearchBar, Icon } from 'react-native-elements';
-import { appFontBold, appFont } from '../config/constants';
+import { appFont } from '../config/constants';
 
 const LeftComponent = ({ leftButton }) => (
    <TouchableWithoutFeedback onPress={() => leftButton.onPress()}>
@@ -89,7 +89,8 @@ const styles = {
    },
    textTitle: {
       color: '#FFF',
-      fontFamily: appFontBold,
+      fontFamily: appFont,
+      fontWeight: '600',
       fontSize: 20,
    },
    inputSearchContainer: {

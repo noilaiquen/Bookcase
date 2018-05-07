@@ -19,7 +19,7 @@ import noImage from '../assets/no-image.png';
 import Upload from '../api/Upload';
 import global from '../config/global';
 import { firebaseApp } from '../config/firebaseConfig';
-import { appTextColor, darkColor, appFontBold, appFont } from '../config/constants';
+import { appTextColor, darkColor, appFont } from '../config/constants';
 
 const currentDate = moment().format('YYYY-MM-DD');
 const defaultThumbnail = 'https://firebasestorage.googleapis.com/v0/b/bookcase-d1e17.appspot.com/o/thumbnail%2FNo_book_cover_lg.jpg?alt=media&token=18f98f4f-1cfa-4610-b6db-bd7478849a20';
@@ -230,7 +230,8 @@ const styles = StyleSheet.create({
    },
    labelStyle: {
       color: darkColor,
-      fontFamily: appFontBold,
+      fontFamily: appFont,
+      fontWeight: '600',
       fontSize: 16,
    },
    inputStyle: {

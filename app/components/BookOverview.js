@@ -1,6 +1,6 @@
 import React from 'react';
 import { Image, View, Text } from 'react-native';
-import { appFont, darkColor, appTextColor, appFontBold } from '../config/constants';
+import { appFont, darkColor, appTextColor } from '../config/constants';
 
 const BookOverview = ({ book }) => (
    <View style={styles.overview}>
@@ -40,7 +40,7 @@ const styles = {
    },
    title: {
       fontSize: 16,
-      fontFamily: appFontBold
+      fontFamily: appFont
    },
    author: {
       fontSize: 14,
