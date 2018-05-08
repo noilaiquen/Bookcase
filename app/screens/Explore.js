@@ -4,7 +4,7 @@ import {
    Text,
    View,
 } from 'react-native';
-import Header from '../components/Header';
+import { Header } from '../components';
 
 export default class Explore extends Component {
    static navigationOptions = () => ({

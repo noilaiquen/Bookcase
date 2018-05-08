@@ -12,9 +12,8 @@ import {
 } from 'react-native';
 import { FormLabel, FormInput, Button, Icon } from 'react-native-elements';
 import moment from 'moment';
-import Header from '../components/Header';
-import Picker from '../api/Picker';
-import DatePicker from '../api/DatePicker';
+import { Header } from '../components';
+import { Picker, DatePicker } from '../utils';
 import noImage from '../assets/no-image.png';
 import Upload from '../api/Upload';
 import global from '../config/global';

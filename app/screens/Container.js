@@ -3,7 +3,7 @@ import {
    View,
    StatusBar
 } from 'react-native';
-import Loading from '../components/Loading';
+import { Loading } from '../components';
 import global from '../config/global';
 
 StatusBar.setBackgroundColor('transparent');

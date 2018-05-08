@@ -10,13 +10,11 @@ import {
    DeviceEventEmitter
 } from 'react-native';
 import { Button, Icon, Rating } from 'react-native-elements';
-import Header from '../components/Header';
-import BookOverview from '../components/BookOverview';
-import Review from '../components/Review';
+import { Header, BookOverview, Review } from '../components';
 import { firebaseApp } from '../config/firebaseConfig';
-import global from '../config/global';
 import { appTextColor, darkColor, appFont, appColor } from '../config/constants';
-import DatePicker from '../api/DatePicker';
+import { DatePicker } from '../utils';
+import global from '../config/global';
 
 const HeaderScreen = ({ goBack, onRemove }) => (
    <Header

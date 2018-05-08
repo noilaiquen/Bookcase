@@ -5,8 +5,7 @@ import {
    FlatList,
    DeviceEventEmitter
 } from 'react-native';
-import BookcaseListItem from '../components/BookcaseListItem';
-import HeaderBookcase from '../components/HeaderBookcase';
+import { HeaderBookcase, BookcaseListItem } from '../components';
 import { appFont } from '../config/constants';
 import { firebaseApp } from '../config/firebaseConfig';
 import imageHeader from '../assets/header4.jpg';
