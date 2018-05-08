@@ -1,13 +1,29 @@
 import React, { Component } from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 import { Card, Button } from 'react-native-elements';
-import moment from 'moment';
-import { ReviewForm } from './index';
-import { appTextColor, appFont, darkColor } from '../config/constants';
+import { ReviewForm, ReviewListItem } from './index';
+import { appTextColor, appFont } from '../config/constants';
 
-const timeAgo = (datetime, format = 'YYYY-MM-DD h:mm:ss') => (
-   moment(datetime, format).fromNow()
-);
+const reviews = [
+   {
+      key: 1212,
+      reviewerName: 'Thanh Binh Nguyen',
+      datetimeReview: '2018-01-03 13:22:32',
+      content: 'Hay, đáng để đọc'
+   },
+   {
+      key: 1231,
+      reviewerName: 'Teo Van Nguyen',
+      datetimeReview: '2017-03-12 10:12:42',
+      content: 'Méo có gì đặc sắc cả'
+   },
+   {
+      key: 312331,
+      reviewerName: 'Tuong Vi Nguyen',
+      datetimeReview: '2018-04-15 3:22:32',
+      content: 'Truyện phải nói là quá hay, 5*'
+   }
+];
 
 class Review extends Component {
    constructor(props) {
@@ -34,48 +50,15 @@ class Review extends Component {
                titleStyle={styles.cardTitle}
             >
                <View style={{ flex: 1 }}>
-                  <View style={styles.reviewContainer}>
-                     <View style={styles.reviewInfo} >
-                        <Text style={{ fontFamily: appFont, color: appTextColor }}>Thanh Binh Nguyen </Text>
-                        <Text style={{ fontFamily: appFont, fontSize: 10 }}> {timeAgo('2018-05-07 13:15:22')}</Text>
-                     </View>
-                     <View>
-                        <Text style={{ fontFamily: appFont }}>Sach hay, mong ra som cac phan ke tiep</Text>
-                     </View>
-                  </View>
-                  <View style={styles.reviewContainer}>
-                     <View style={styles.reviewInfo} >
-                        <Text style={{ fontFamily: appFont, color: appTextColor }}>Nguyen Tran </Text>
-                        <Text style={{ fontFamily: appFont, fontSize: 10 }}> {timeAgo('2017-02-07 13:15:22')}</Text>
-                     </View>
-                     <View>
-                        <Text style={{ fontFamily: appFont }}>Cha co veo gi hay, khong nen mua</Text>
-                     </View>
-                  </View>
-                  <View style={styles.reviewContainer}>
-                     <View style={styles.reviewInfo} >
-                        <Text style={{ fontFamily: appFont, color: appTextColor }}>Tuong Vi </Text>
-                        <Text style={{ fontFamily: appFont, fontSize: 10 }}> {timeAgo('2018-01-07 13:15:22')}</Text>
-                     </View>
-                     <View>
-                        <Text style={{ fontFamily: appFont }}>Tam on, hy vong phan sau hay can how</Text>
-                     </View>
-                  </View>
-                  <View style={styles.reviewContainer}>
-                     <View style={styles.reviewInfo} >
-                        <Text style={{ fontFamily: appFont, color: appTextColor }}>Van Teo Tran </Text>
-                        <Text style={{ fontFamily: appFont, fontSize: 10 }}> {timeAgo('2016-02-12 8:15:22')}</Text>
-                     </View>
-                     <View>
-                        <Text style={{ fontFamily: appFont }}>Cang doc cang me, vote 5*</Text>
-                     </View>
-                  </View>
+                  {reviews.map(review => <ReviewListItem review={review} key={review.key} />)}
                </View>
-      
+
                <Button
+                  rounded
                   title="WRITE A REVIEW"
                   backgroundColor={appTextColor}
                   onPress={this.onShowForm}
+                  fontFamily={appFont}
                />
             </Card>
       
@@ -98,15 +81,5 @@ const styles = {
       fontFamily: appFont,
       fontWeight: '100',
       fontSize: 16
-   },
-   reviewContainer: {
-      paddingBottom: 5,
-      marginBottom: 10,
-      borderBottomWidth: 0.5,
-      borderColor: darkColor
-   },
-   reviewInfo: {
-      flexDirection: 'row',
-      alignItems: 'center'
    }
 };

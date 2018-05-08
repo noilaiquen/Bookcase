@@ -204,12 +204,13 @@ export default class Edit extends Component {
                </View>   
                <View>
                   <Button
+                     rounded
+                     title="ADD BOOK"
+                     fontSize={16}
                      onPress={this.onUpload}
                      containerViewStyle={{ marginTop: 50 }}   
                      buttonStyle={button}
                      fontFamily={appFont}
-                     fontSize={16}
-                     title="ADD BOOK"
                   />
                </View>
             </ScrollView>
