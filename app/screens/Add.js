@@ -197,7 +197,7 @@ export default class Edit extends Component {
                               size={20}
                               color={appTextColor}
                            />
-                           <Text>{` ${dateFinished}`}</Text>
+                           <Text style={{ fontFamily: appFont }}>{` ${dateFinished}`}</Text>
                         </TouchableOpacity>
                      </View>
                   ) : null }

@@ -6,6 +6,7 @@ import HeaderLeft from './HeaderLeft';
 import Loading from './Loading';
 import Review from './Review';
 import TabBarComponent from './TabBarComponent';
+import ReviewForm from './ReviewForm';
 
 export { 
    BookcaseListItem,
@@ -15,5 +16,6 @@ export {
    HeaderLeft,
    Loading,
    Review,
-   TabBarComponent
+   TabBarComponent,
+   ReviewForm
 };
