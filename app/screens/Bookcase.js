@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import {
-   StyleSheet,
    View,
    FlatList,
    DeviceEventEmitter
@@ -107,7 +106,7 @@ export default class Bookcase extends Component {
    }
 }
 
-const styles = StyleSheet.create({
+const styles = {
    container: {
       flex: 1,
       backgroundColor: '#FFF',
@@ -135,4 +134,4 @@ const styles = StyleSheet.create({
       color: '#273c75',
       fontFamily: appFont
    }
-});
+};

@@ -7,6 +7,7 @@ import Explore from '../screens/Explore';
 // import Lists from '../screens/Lists';
 import Profile from '../screens/Profile';
 import ViewBook from '../screens/ViewBook';
+import ListReview from '../screens/ListReview';
 import Add from '../screens/Add';
 import TabBarComponent from '../components/TabBarComponent';
 import { appTextColor, appFont } from '../config/constants';
@@ -115,6 +116,13 @@ export const RootNavigator = () => (
       },
       ViewBook: {
          screen: ViewBook,
+         navigationOptions: {
+            header: null,
+            gesturesEnabled: false
+         }
+      },
+      Reviews: {
+         screen: ListReview,
          navigationOptions: {
             header: null,
             gesturesEnabled: false

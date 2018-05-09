@@ -12,7 +12,7 @@ const HeaderLeft = ({ icon, text, onPress }) => (
          name={icon}
          type="ionicon"
          size={25}
-         color="#FFF"
+         color="red"
       />
       <Text style={{ fontFamily: appFont, fontSize: 16, color: '#FFF' }}> {text}</Text>
    </TouchableOpacity>

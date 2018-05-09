@@ -9,7 +9,7 @@ import { timeAgo } from '../utils';
 const ReviewListItem = ({ review }) => (
    <View style={styles.reviewContainer}>
       <View style={styles.reviewInfo} >
-         <Text style={styles.reviewerText}>{review.reviewerName}</Text>
+         <Text style={styles.reviewerText}>{review.name}</Text>
          <Text style={styles.timeText}> {` ${timeAgo(review.datetimeReview)}`}</Text>
       </View>
       <View>

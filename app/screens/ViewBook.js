@@ -103,7 +103,7 @@ export default class ViewBook extends Component {
          content, inputGroup, label, inputGroupItem,
          formGroup, switchStyle, container
       } = styles;
-      const { book, error, updateInfo } = this.state;
+      const { book, error, updateInfo, bookId } = this.state;
 
       if (error) {
          return (
@@ -194,7 +194,7 @@ export default class ViewBook extends Component {
                   </View>
                </View>
                
-               <Review {...this.props} />
+               <Review {...this.props} bookId={bookId} />
             </View>
          </ScrollView>
       );

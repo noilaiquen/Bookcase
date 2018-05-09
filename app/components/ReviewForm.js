@@ -1,16 +1,16 @@
 import React from 'react';
 import {
    View,
-   Text,
    Dimensions,
-   Modal
+   Modal,
+   TextInput
 } from 'react-native';
 import { Button } from 'react-native-elements';
 import { appTextColor, appFont } from '../config/constants';
 
 const screen = Dimensions.get('window');
 
-const ReviewForm = ({ isShow, onShowForm }) => (
+const ReviewForm = ({ isShow, onSubmit, onInputText, onCancel, text }) => (
    <Modal
       animationType="slide"
       transparent
@@ -21,15 +21,21 @@ const ReviewForm = ({ isShow, onShowForm }) => (
          <View style={{ flex: 1 }} />
          <View style={styles.container}>
             <View style={{ flex: 1 }}>
-               <Text>saddadddsadasd</Text>
-               <Text>saddadddsadasd</Text>
-               <Text>saddadddsadasd</Text>
+               <TextInput
+                  style={{ padding: 5, fontFamily: appFont }}   
+                  placeholder="Pick a review..."
+                  multiline
+                  numberOfLines={4}
+                  onChangeText={onInputText}
+                  value={text}
+               />
             </View> 
             <Button
                title="OK"
                rounded
                backgroundColor={appTextColor}
                fontFamily={appFont}
+               onPress={onSubmit}
             />
             <View style={{ height: 5 }} />
             <Button
@@ -38,7 +44,7 @@ const ReviewForm = ({ isShow, onShowForm }) => (
                textStyle={styles.textStyle}
                buttonStyle={styles.buttonStyle}
                backgroundColor="#FFF"
-               onPress={onShowForm}
+               onPress={onCancel}
                fontFamily={appFont}
             />
             <View style={{ height: 5 }} />

@@ -6,7 +6,7 @@ import {
 import { Icon, Header as HeaderRNE } from 'react-native-elements';
 import { appFont, appColor } from '../config/constants';
 
-const HeaderLeft = ({ icon, text, onPress }) => (
+export const HeaderLeft = ({ icon, text, onPress, color }) => (
    <TouchableOpacity
       onPress={() => onPress()}
       style={styles.headerLeftContainer}
@@ -15,15 +15,15 @@ const HeaderLeft = ({ icon, text, onPress }) => (
          name={icon}
          type="ionicon"
          size={25}
-         color="#FFF"
+         color={color || '#FFF'}
       />
-      <Text style={styles.textLeft}> 
+      <Text style={[styles.textLeft, { color: color || '#FFF' }]}> 
          {` ${text}` || null }
       </Text>
    </TouchableOpacity>
 );
 
-const HeaderRight = ({ icon, onPress }) => (
+export const HeaderRight = ({ icon, onPress }) => (
    <TouchableOpacity
       onPress={() => onPress()}
       style={styles.headerRightContainer}
@@ -37,7 +37,7 @@ const HeaderRight = ({ icon, onPress }) => (
    </TouchableOpacity>
 );
 
-const HeaderCenter = ({ text, style }) => (
+export const HeaderCenter = ({ text, style }) => (
    <Text style={style || styles.headerCenter}>{ text || 'Bookcase' }</Text>
 );
 

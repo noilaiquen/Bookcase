@@ -237,7 +237,8 @@ const styles = StyleSheet.create({
    inputStyle: {
       borderBottomColor: darkColor,
       borderBottomWidth: 1,
-      paddingBottom: 2
+      paddingBottom: 2,
+      fontFamily: appFont
    },
    button: {
       backgroundColor: appTextColor,
