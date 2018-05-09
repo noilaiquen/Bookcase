@@ -101,7 +101,7 @@ export default class ViewBook extends Component {
    render() {
       const {
          content, inputGroup, label, inputGroupItem,
-         formGroup, switchStyle, container
+         formGroup, switchStyle, container, summary
       } = styles;
       const { book, error, updateInfo, bookId } = this.state;
 
@@ -180,7 +180,7 @@ export default class ViewBook extends Component {
                                     size={20}
                                     color={appTextColor}
                                  />
-                                 <Text style={{ fontFamily: appFont }}>{` ${book.date_finished}`}</Text>
+                                 <Text style={summary}>{` ${book.date_finished}`}</Text>
                               </TouchableOpacity>
                            </View>
                         ) : null}
@@ -188,9 +188,7 @@ export default class ViewBook extends Component {
                   </View>
                   <View style={formGroup}>
                      <Text style={label}>Summary</Text>
-                     <Text style={{ fontFamily: appFont }}>
-                        This color palette comprises primary and accent colors that can be used for illustration or to develop your brand colors. They’ve been designed to work harmoniously with each other. 
-                     </Text>
+                     <Text style={summary}>{book.summary}</Text>
                   </View>
                </View>
                
@@ -230,5 +228,8 @@ const styles = StyleSheet.create({
       left: 0,
       paddingVertical: 20
    },
+   summary: {
+      fontFamily: appFont
+   }
 });
 

@@ -7,6 +7,7 @@ import {
    Switch,
    TouchableOpacity,
    Text,
+   TextInput,
    ToastAndroid,
    DeviceEventEmitter
 } from 'react-native';
@@ -27,6 +28,7 @@ const initState = {
    title: '',
    author: '',
    page: 0,
+   summary: '',
    isFinished: false,
    dateFinished: currentDate,
    imageSource: null
@@ -48,7 +50,7 @@ export default class Edit extends Component {
    }
 
    onUpload = async () => {
-      const { title, author, isFinished, dateFinished, page, imageSource } = this.state;
+      const { title, author, isFinished, dateFinished, page, imageSource, summary } = this.state;
       global.setLoadingVisible(true);
 
       if (title === '' || author === '') {
@@ -70,6 +72,7 @@ export default class Edit extends Component {
       const dataPost = {
          title,
          author,
+         summary,
          rating: 0,
          is_finished: isFinished,
          date_finished: isFinished ? dateFinished : null,
@@ -106,8 +109,9 @@ export default class Edit extends Component {
          container, labelStyle, inputStyle, 
          button, image, scrollview, 
          switchStyle, removeImage,
-         textRemoveImage, inputGroup, inputGroupItem } = styles;
-      const { imageSource, title, author, isFinished, dateFinished, page } = this.state;
+         textRemoveImage, inputGroup, inputGroupItem,
+         textarea, textareaContainer } = styles;
+      const { imageSource, title, author, isFinished, dateFinished, page, summary } = this.state;
       return (
          <View style={container}>
             <ScrollView contentContainerStyle={scrollview}>
@@ -134,7 +138,6 @@ export default class Edit extends Component {
                      value={title}
                      onChangeText={text => this.setState({ title: text })}
                      placeholder="Enter book title..."
-                     underlineColorAndroid="rgba(0,0,0,0)"
                      placeholderTextColor="#BDBDBD"
                      returnKeyType="next"
                      onSubmitEditing={() => this.authorInput.focus()}
@@ -148,9 +151,7 @@ export default class Edit extends Component {
                      value={author}
                      onChangeText={text => this.setState({ author: text })}
                      placeholder="Enter book author..."
-                     underlineColorAndroid="rgba(0,0,0,0)"
                      placeholderTextColor="#BDBDBD"
-                     keyboardType="email-address"
                      returnKeyType="next"
                      onSubmitEditing={() => this.pageInput.focus()}
                   />
@@ -164,10 +165,25 @@ export default class Edit extends Component {
                      keyboardType="numeric"
                      onChangeText={text => this.setState({ page: text })}
                      placeholder="Enter total page..."
-                     underlineColorAndroid="rgba(0,0,0,0)"
                      placeholderTextColor="#BDBDBD"
                      returnKeyType="next"
+                     onSubmitEditing={() => this.summaryInput.focus()}
                   />
+               </View>
+               <View>
+                  <FormLabel labelStyle={labelStyle}>Summary</FormLabel>
+                  <View style={textareaContainer}>
+                     <TextInput
+                        multiline
+                        numberOfLines={4}
+                        value={summary}
+                        placeholder="Enter summary..."
+                        placeholderTextColor="#BDBDBD"
+                        style={textarea}
+                        ref={(input) => this.summaryInput = input}  //eslint-disable-line  
+                        onChangeText={(text) => this.setState({ summary: text })}
+                     />
+                  </View>
                </View>
                <View style={inputGroup}>
                   <View>
@@ -240,6 +256,10 @@ const styles = StyleSheet.create({
       paddingBottom: 2,
       fontFamily: appFont
    },
+   textarea: {
+      fontFamily: appFont,
+      color: darkColor
+   },
    button: {
       backgroundColor: appTextColor,
       height: 40 
@@ -271,6 +291,13 @@ const styles = StyleSheet.create({
    inputGroupItem: {
       flexDirection: 'row',
       justifyContent: 'center'
+   },
+   textareaContainer: {
+      backgroundColor: '#FFF',
+      borderColor: darkColor,
+      borderRadius: 5,
+      borderWidth: 1,
+      marginHorizontal: 15
    }
 });
 
