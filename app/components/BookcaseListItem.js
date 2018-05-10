@@ -7,7 +7,7 @@ import {
    TouchableOpacity,
    Keyboard
 } from 'react-native';
-import { Icon } from 'react-native-elements';
+import { Icon, Rating } from 'react-native-elements';
 import { appFont, darkColor, appTextColor } from '../config/constants';
 
 export default class BookcaseListItem extends Component {
@@ -44,6 +44,12 @@ export default class BookcaseListItem extends Component {
                   >
                      Page: {book.page}
                   </Text>
+                  <Rating
+                     type='heart'
+                     readonly
+                     startingValue={book.rating}
+                     imageSize={12}
+                  />
                </View>
                <View style={{ position: 'absolute', right: 10 }}>
                   <Icon

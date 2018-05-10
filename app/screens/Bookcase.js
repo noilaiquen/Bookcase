@@ -75,6 +75,7 @@ export default class Bookcase extends Component {
                _id: childSnapshot.key,
                title: childSnapshot.val().title,
                author: childSnapshot.val().author,
+               rating: childSnapshot.val().rating,
                page: childSnapshot.val().page,
                is_finished: childSnapshot.val().is_finished,
                date_finished: childSnapshot.val().date_finished,
