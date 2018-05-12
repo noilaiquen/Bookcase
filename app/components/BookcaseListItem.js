@@ -4,7 +4,7 @@ import {
    Text,
    StyleSheet,
    Image,
-   TouchableOpacity,
+   TouchableWithoutFeedback,
    Keyboard
 } from 'react-native';
 import { Icon, Rating } from 'react-native-elements';
@@ -14,7 +14,7 @@ export default class BookcaseListItem extends Component {
    render() {
       const { book } = this.props;
       return (
-         <TouchableOpacity
+         <TouchableWithoutFeedback
             onPress={() => {
                Keyboard.dismiss();
                this.props.navigation.navigate('ViewBook', { book_id: book._id });
@@ -60,7 +60,7 @@ export default class BookcaseListItem extends Component {
                   />
                </View>
             </View>
-         </TouchableOpacity>
+         </TouchableWithoutFeedback>
       );
    }
 }

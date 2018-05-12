@@ -62,8 +62,7 @@ export default class Edit extends Component {
       let thumbnail = null;
       if (imageSource !== null) {
          try {
-            const imageURL = await Upload(imageSource.uri);
-            thumbnail = imageURL;
+            thumbnail = await Upload(imageSource.uri);
          } catch (error) {
             console.log('upload image failed!');
          }
