@@ -106,32 +106,32 @@ export const Tabs = TabNavigator({
    }
 });
 
-export const RootNavigator = () => (
-   StackNavigator({
-      Tabs: {
-         screen: Tabs,
-         navigationOptions: {
-            gesturesEnabled: false
-         }
-      },
-      ViewBook: {
-         screen: ViewBook,
-         navigationOptions: {
-            header: null,
-            gesturesEnabled: false
-         }
-      },
-      Reviews: {
-         screen: ListReview,
-         navigationOptions: {
-            header: null,
-            gesturesEnabled: false
-         }
+const Authorized = StackNavigator({
+   Tabs: {
+      screen: Tabs,
+      navigationOptions: {
+         gesturesEnabled: false
       }
-   }, {
-         initialRouteName: 'Tabs',
-         // initialRouteName: 'ViewBook',
-         headerMode: 'screen'
-   })
-);
+   },
+   ViewBook: {
+      screen: ViewBook,
+      navigationOptions: {
+         header: null,
+         gesturesEnabled: false
+      }
+   },
+   Reviews: {
+      screen: ListReview,
+      navigationOptions: {
+         header: null,
+         gesturesEnabled: false
+      }
+   }
+}, {
+   initialRouteName: 'Tabs',
+   // initialRouteName: 'ViewBook',
+   headerMode: 'screen'
+});
+
+export default Authorized;
 

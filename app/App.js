@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { RootNavigator } from './routes/Router';
+import Root from './routes/Root';
 import Container from './screens/Container';
 
 console.ignoredYellowBox = [
@@ -8,7 +8,7 @@ console.ignoredYellowBox = [
 
 export default class App extends Component {
    render() {
-      const Screen = RootNavigator();
+      const Screen = Root();
       return (
          <Container>
             <Screen />
