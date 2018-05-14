@@ -14,8 +14,8 @@
       android:theme="@style/AppTheme">
       <activity
         android:name=".MainActivity"
-        android:launchMode="singleTask"
         android:label="@string/app_name"
+        android:launchMode="singleTask"
         android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
         android:windowSoftInputMode="adjustResize">
         <intent-filter>
@@ -27,10 +27,10 @@
             <category android:name="android.intent.category.DEFAULT" />
             <category android:name="android.intent.category.BROWSABLE" />
             <data
-               android:host="bookcase.auth0.com"
-               android:pathPrefix="/android/${applicationId}/callback"
-               android:scheme="${applicationId}" />
-         </intent-filter>
+              android:host="bookcase.auth0.com"
+              android:pathPrefix="/android/com.bookcase/callback"
+              android:scheme="com.bookcase" />
+        </intent-filter>
       </activity>
       <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
     </application>

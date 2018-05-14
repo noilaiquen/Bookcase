@@ -1,38 +1,44 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
 import React, { Component } from 'react';
 import {
   Platform,
   StyleSheet,
   Text,
-  View
+   View,
+  Button
 } from 'react-native';
+import Auth0 from 'react-native-auth0';
 
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' +
-    'Cmd+D or shake for dev menu',
-  android: 'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
+const auth0 = new Auth0({
+   clientId: "B_DfmldbLz36_wFu1xx_U0A1JItf3kDP",
+   domain: "bookcase.auth0.com"
 });
 
 type Props = {};
 export default class App extends Component<Props> {
+   constructor() {
+      super();
+      this.login = this.login.bind(this);
+   }
+
+   login = () => {
+      auth0.webAuth
+      .authorize({
+        scope: 'openid profile',
+        audience: 'https://bookcase.auth0.com/userinfo'
+      })
+      .then(credentials => {
+        this.setState({ accessToken: credentials.accessToken }, () => console.log(credentials));
+      })
+      .catch(error => console.log(error));
+   }
+
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit App.js
-        </Text>
-        <Text style={styles.instructions}>
-          {instructions}
-        </Text>
+          <Button
+            title="login"
+            onPress={this.login}
+          />
       </View>
     );
   }
@@ -44,15 +50,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
+  }
 });
