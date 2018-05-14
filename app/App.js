@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import Authorized from './routes/Authorized';
-import SignIn from './screens/SignIn';
+import Root from './routes/Root';
 import Container from './screens/Container';
 
 console.ignoredYellowBox = [
@@ -8,25 +7,11 @@ console.ignoredYellowBox = [
 ];
 
 export default class App extends Component {
-   constructor() {
-      super();
-      this.state = {
-         isLogged: true
-      };
-   }
-
-   screenShouldRender() {
-      const { isLogged } = this.state;
-      if (isLogged) {
-         return <Authorized />;
-      }
-      return <SignIn />;
-   }
-
    render() {
+      const Screen = Root(false);
       return (
          <Container>
-            {this.screenShouldRender()}
+            <Screen />
          </Container>
       );
    }

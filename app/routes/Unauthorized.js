@@ -6,9 +6,7 @@ const Unauthorized = StackNavigator({
       screen: SignIn
    }
 }, {
-   // navigationOptions: {
-      headerMode: 'none'
-   // }
+   headerMode: 'none'
 });
 
 export default Unauthorized;
