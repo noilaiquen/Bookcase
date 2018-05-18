@@ -1,4 +1,5 @@
 const global = {
-   setLoadingVisible: null
+   setLoadingVisible: null,
+   accessToken: null
 };
 export default global;

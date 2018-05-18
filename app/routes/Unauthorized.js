@@ -1,11 +1,16 @@
 import { StackNavigator } from 'react-navigation';
-import SignIn from '../screens/SignIn';
+import Main from '../screens/unauthorized/Main';
+import SignIn from '../screens/unauthorized/SignIn';
 
 const Unauthorized = StackNavigator({
+   MainUnauthorized: {
+      screen: Main
+   },
    SignIn: {
       screen: SignIn
    }
 }, {
+   initialRouteName: 'MainUnauthorized',
    headerMode: 'none'
 });
 

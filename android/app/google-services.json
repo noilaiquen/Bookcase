@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "450992608942",
+    "firebase_url": "https://bookcase-d1e17.firebaseio.com",
+    "project_id": "bookcase-d1e17",
+    "storage_bucket": "bookcase-d1e17.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:450992608942:android:9646c7c309279887",
+        "android_client_info": {
+          "package_name": "com.bookcase"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "450992608942-h90s5birio9v1k1brus192333mtgh385.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bookcase",
+            "certificate_hash": "deb979c7ae39b1d092887829c7b6f271efde07d0"
+          }
+        },
+        {
+          "client_id": "450992608942-g4842m8jmgdovacbk7gj3ub6pet1uilm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAzACZqs6agbat9xPqdVrYYRS3FrK-4mso"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "450992608942-g4842m8jmgdovacbk7gj3ub6pet1uilm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

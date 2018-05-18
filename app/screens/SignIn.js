@@ -1,53 +1,69 @@
 import React, { Component } from 'react';
 import {
    View,
-   Text
+   Text,
+   Image
 } from 'react-native';
 import { Button } from 'react-native-elements';
+import { NavigationActions } from 'react-navigation';
 import Auth0 from 'react-native-auth0';
-import { appColor, appTextColor } from '../config/constants';
+import { appColor, appTextColor, appFont } from '../config/constants';
+import auth0Credentials from '../config/auth0-credentials';
+import global from '../config/global';
+import logo from '../assets/logo.png';
 
-const auth0 = new Auth0({
-   clientId: 'B_DfmldbLz36_wFu1xx_U0A1JItf3kDP',
-   domain: 'bookcase.auth0.com'
-});
+const auth0 = new Auth0(auth0Credentials);
 
 export default class App extends Component {
    constructor() {
       super();
       this.state = {
-         accessToken: null
+         error: false
       };
       this.onSignIn = this.onSignIn.bind(this);
    }
 
-   onSignIn = () => {
-      auth0.webAuth
-      .authorize({
-        scope: 'openid profile',
-        audience: 'https://bookcase.auth0.com/userinfo'
-      })
-      .then(credentials => {
-        this.setState({ accessToken: credentials.accessToken });
-      })
-      .catch(error => console.log(error));
+   onSignIn = async () => {
+      try {
+         const credentials = await auth0.webAuth.authorize({
+            scope: 'openid profile email',
+            audience: 'https://bookcase.auth0.com/userinfo'
+         });
+         global.accessToken = credentials.accessToken;
+
+         const resetAction = NavigationActions.reset({
+            index: 0,
+            actions: [
+               NavigationActions.navigate({ routeName: 'Authorized' })
+            ],
+         });
+         this.props.navigation.dispatch(resetAction);
+      } catch (error) {
+         console.log(error);
+         this.setState({ error: true });
+      }
    }
 
    render() {
       return (
          <View style={styles.container}>
-            <Button
-               rounded  
-               title="SIGN IN"
-               backgroundColor={appTextColor} 
-               buttonStyle={styles.buttonStyle}
-               onPress={this.onSignIn}
-            />
-            {this.state.accessToken !== null &&
-               (
-               <Text style={{ color: '#FFF' }}>{`accessToken: ${this.state.accessToken}`}</Text>
-               )
-            }
+            <View style={styles.logoContainer}>
+               <Text style={styles.logoText}>BOOCASE</Text>   
+               <Image
+                  source={logo}
+                  style={styles.logoImage}
+                  resizeMode="contain"
+               /> 
+            </View>
+
+            <View style={styles.buttonContainer}>            
+               <Button
+                  title="SIGN IN"
+                  backgroundColor={appTextColor} 
+                  buttonStyle={styles.buttonStyle}
+                  onPress={this.onSignIn}
+               />
+            </View>   
          </View>
       );
    }
@@ -56,12 +72,29 @@ export default class App extends Component {
 const styles = {
   container: {
       flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
       backgroundColor: appColor
    },
+   logoContainer: {
+      flex: 3,
+      alignItems: 'center',
+      justifyContent: 'center'
+   },
+   logoText: {
+      fontFamily: appFont,
+      color: '#FFF',
+      fontSize: 20
+   },
+   logoImage: {
+      width: 300,
+      height: 300
+   },
+   buttonContainer: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center'
+   },
    buttonStyle: {
-      width: 200,
+      width: 300,
       height: 50
    } 
 };
