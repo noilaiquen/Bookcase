@@ -6,6 +6,7 @@ import {
 import { GoogleSignin, GoogleSigninButton } from 'react-native-google-signin';
 import { HeaderLeft } from '../../components';
 import { appColor } from '../../config/constants';
+import googleSignInConfig from '../../config/googleSignConfig';
 
 class SignIn extends Component {
    componentDidMount() {
@@ -16,7 +17,7 @@ class SignIn extends Component {
       try {
          await GoogleSignin.hasPlayServices({ autoResolve: true });
          await GoogleSignin.configure({
-            webClientId: '450992608942-g4842m8jmgdovacbk7gj3ub6pet1uilm.apps.googleusercontent.com',
+            webClientId: googleSignInConfig.webClientId,
             offlineAccess: false
          });
       } catch (err) {
