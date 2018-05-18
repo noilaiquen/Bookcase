@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import {
    View,
-   StatusBar
+   StatusBar,
+   Alert
 } from 'react-native';
 import { GoogleSignin, GoogleSigninButton } from 'react-native-google-signin';
 import { HeaderLeft } from '../../components';
 import { appColor } from '../../config/constants';
 import googleSignInConfig from '../../config/googleSignConfig';
+import firebase, { firebaseApp } from '../../config/firebaseConfig';
 
 class SignIn extends Component {
    componentDidMount() {
@@ -21,14 +23,19 @@ class SignIn extends Component {
             offlineAccess: false
          });
       } catch (err) {
-         console.log('Play services error', err.code, err.message);
+         Alert.alert(
+            'Error!',
+            'Google service error!',
+            [{ text: 'OK', onPress: () => null }]
+         );
       }
    }
 
    googleSignIn = async () => {
       try {
          const user = await GoogleSignin.signIn();
-         console.log(user);
+         const credential = firebase.auth.GoogleAuthProvider.credential(user.idToken, user.accessToken);
+         await firebaseApp.auth().signInWithCredential(credential);
       } catch (err) {
          console.log('WRONG SIGNIN', err);
       }
