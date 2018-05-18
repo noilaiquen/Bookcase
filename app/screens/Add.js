@@ -221,7 +221,6 @@ export default class Edit extends Component {
                   <Button
                      rounded
                      title="ADD BOOK"
-                     fontSize={16}
                      onPress={this.onUpload}
                      containerViewStyle={{ marginTop: 50 }}   
                      buttonStyle={button}
