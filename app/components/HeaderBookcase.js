@@ -90,7 +90,7 @@ const styles = {
    textTitle: {
       color: '#FFF',
       fontFamily: appFont,
-      fontWeight: '600',
+      // fontWeight: '600',
       fontSize: 20,
    },
    inputSearchContainer: {

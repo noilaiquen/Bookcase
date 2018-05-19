@@ -83,7 +83,7 @@ const styles = {
       color: '#fff',
       fontSize: 20,
       fontFamily: appFont,
-      fontWeight: '600',
+      // fontWeight: '600',
    },
    headerLeftContainer: {
       flexDirection: 'row', 

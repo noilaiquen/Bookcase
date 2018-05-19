@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Root from './routes/Root';
 import Container from './screens/Container';
+import Splash from './screens/Splash';
 import { firebaseApp } from './config/firebaseConfig';
 import global from './config/global';
 
@@ -46,7 +47,7 @@ export default class App extends Component {
    render() {
       const Screen = Root(this.state.authenticated);
       if (this.state.loading) {
-         return null;
+         return <Splash />;
       }
 
       return (

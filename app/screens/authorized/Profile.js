@@ -6,10 +6,10 @@ import {
    Image
 } from 'react-native';
 import { Button } from 'react-native-elements';
-import { Header } from '../components';
-import { firebaseApp } from '../config/firebaseConfig';
-import global from '../config/global';
-import { appTextColor, appFont } from '../config/constants';
+import { Header } from '../../components';
+import { firebaseApp } from '../../config/firebaseConfig';
+import global from '../../config/global';
+import { appTextColor, appFont } from '../../config/constants';
 
 export default class Profile extends Component {
    static navigationOptions = () => ({
@@ -59,7 +59,8 @@ export default class Profile extends Component {
       return (
          <View style={styles.container}>
             <Image 
-               style={{ width: 100, height: 100, resizeMode: 'contain', borderRadius: 10 }}
+               style={styles.avatar}
+               resizeMode="contain"
                source={{ uri: user.photoURL }} 
             />
             <Text style={styles.name}>{user.displayName}</Text>
@@ -67,8 +68,9 @@ export default class Profile extends Component {
 
             <View style={styles.buttons}>
                <Button
-                  buttonStyle={{ width: 300 }}
                   title="SIGN OUT"
+                  fontFamily={appFont}
+                  buttonStyle={styles.buttonSignOut}
                   backgroundColor={appTextColor}
                   onPress={this.signOut}
                />
@@ -103,6 +105,15 @@ const styles = {
    },
    buttons: {
       marginTop: 20
+   },
+   buttonSignOut: {
+      width: 300,
+      height: 40
+   },
+   avatar: {
+      width: 100,
+      height: 100,
+      borderRadius: 50
    }
 };
 

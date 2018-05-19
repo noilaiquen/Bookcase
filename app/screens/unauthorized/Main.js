@@ -24,6 +24,7 @@ class Main extends Component {
             <View style={styles.buttonContainer}>            
                <Button
                   title="SIGN IN"
+                  fontFamily={appFont}
                   backgroundColor={appTextColor} 
                   buttonStyle={styles.buttonStyle}
                   onPress={() => this.props.navigation.navigate('SignIn')}
@@ -61,7 +62,7 @@ const styles = {
     },
     buttonStyle: {
        width: 300,
-       height: 50
+       height: 40
     } 
  };
 

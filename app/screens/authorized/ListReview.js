@@ -5,9 +5,9 @@ import {
    StatusBar,
    ActivityIndicator
 } from 'react-native';
-import { ReviewListItem, HeaderLeft } from '../components';
-import { firebaseApp } from '../config/firebaseConfig';
-import { appColor, appTextColor } from '../config/constants';
+import { ReviewListItem, HeaderLeft } from '../../components';
+import { firebaseApp } from '../../config/firebaseConfig';
+import { appColor, appTextColor } from '../../config/constants';
 
 export default class ListReview extends Component {
    constructor(props) {

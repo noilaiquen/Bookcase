@@ -2,13 +2,13 @@ import React from 'react';
 import { StackNavigator, TabNavigator } from 'react-navigation';
 import { Icon } from 'react-native-elements';
 
-import Bookcase from '../screens/Bookcase';
-import Explore from '../screens/Explore';
-import Profile from '../screens/Profile';
-// import Lists from '../screens/Lists';
-import ViewBook from '../screens/ViewBook';
-import ListReview from '../screens/ListReview';
-import Add from '../screens/Add';
+import Bookcase from '../screens/authorized/Bookcase';
+import Explore from '../screens/authorized/Explore';
+import Profile from '../screens/authorized/Profile';
+// import Lists from '../screens/authorized/Lists';
+import ViewBook from '../screens/authorized/ViewBook';
+import ListReview from '../screens/authorized/ListReview';
+import Add from '../screens/authorized/Add';
 import TabBarComponent from '../components/TabBarComponent';
 import { appTextColor, appFont } from '../config/constants';
 

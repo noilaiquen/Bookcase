@@ -4,10 +4,10 @@ import {
    FlatList,
    DeviceEventEmitter
 } from 'react-native';
-import { HeaderBookcase, BookcaseListItem } from '../components';
-import { appFont } from '../config/constants';
-import { firebaseApp } from '../config/firebaseConfig';
-import imageHeader from '../assets/header4.jpg';
+import { HeaderBookcase, BookcaseListItem } from '../../components';
+import { appFont } from '../../config/constants';
+import { firebaseApp } from '../../config/firebaseConfig';
+import imageHeader from '../../assets/header4.jpg';
 
 export default class Bookcase extends Component {
    static navigationOptions = props => ({
