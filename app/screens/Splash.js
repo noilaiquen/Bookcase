@@ -1,28 +1,21 @@
 import React from 'react';
-import { View, Image, StyleSheet } from 'react-native';
-import logo from '../assets/icon.png';
-import { appColor } from '../config/constants';
+import { Image, StyleSheet } from 'react-native';
+import splash from '../assets/splash.jpg';
 
-const Splash = () => {
-   const { container, logoImage } = styles;
-   return (
-      <View style={container}>
-         <Image style={logoImage} source={logo} />
-      </View>
-   );
-};
+const Splash = () => (
+   <Image
+      source={splash}
+      style={styles.image}
+   />
+);
 
 export default Splash;
 
 const styles = StyleSheet.create({
-   container: {
+   image: {
       flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: appColor
-   },
-   logoImage: {
-      width: 100,
-      resizeMode: 'contain'
+      width: null,
+      height: null,
+      resizeMode: 'cover'
    }
 });
