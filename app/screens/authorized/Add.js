@@ -114,7 +114,7 @@ export default class Edit extends Component {
       return (
          <View style={container}>
             <ScrollView contentContainerStyle={scrollview}>
-               <Header centerComponent={{ text: 'bookcase' }} />   
+               <Header centerComponent />   
                <View style={{ height: 15 }} />
                <TouchableOpacity onPress={this.chooseImage}>
                   <Image 

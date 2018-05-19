@@ -1,10 +1,13 @@
 import React from 'react';
 import {
    Text,
-   TouchableOpacity
+   TouchableOpacity,
+   Image,
+   View
 } from 'react-native';
 import { Icon, Header as HeaderRNE } from 'react-native-elements';
 import { appFont, appColor } from '../config/constants';
+import logo from '../assets/logo_header.png';
 
 export const HeaderLeft = ({ icon, text, onPress, color }) => (
    <TouchableOpacity
@@ -37,8 +40,12 @@ export const HeaderRight = ({ icon, onPress }) => (
    </TouchableOpacity>
 );
 
-export const HeaderCenter = ({ text, style }) => (
-   <Text style={style || styles.headerCenter}>{ text || 'Bookcase' }</Text>
+export const HeaderCenter = () => (
+   <Image
+      style={{ width: 150 }}
+      resizeMode="contain"   
+      source={logo}
+   />
 );
 
 const Header = props => {
@@ -58,10 +65,7 @@ const Header = props => {
 
          centerComponent={
             centerComponent !== undefined ? 
-               <HeaderCenter 
-                  text={centerComponent.text}
-                  style={centerComponent.style}
-               /> : null
+               <HeaderCenter /> : null
             }
 
          rightComponent={

@@ -3,10 +3,12 @@ import {
    Text,
    View,
    ImageBackground,
-   TouchableWithoutFeedback
+   TouchableWithoutFeedback,
+   Image
 } from 'react-native';
 import { SearchBar, Icon } from 'react-native-elements';
 import { appFont } from '../config/constants';
+import logo from '../assets/logo_header.png';
 
 const LeftComponent = ({ leftButton }) => (
    <TouchableWithoutFeedback onPress={() => leftButton.onPress()}>
@@ -49,7 +51,11 @@ const HeaderBookcase = props => (
          {props.leftButton !== undefined ? (
             <LeftComponent {...props} />
          ) : <View style={styles.offset} />}
-         <Text style={styles.textTitle}>{props.title ? props.title : null}</Text>
+         <Image
+            source={logo}
+            style={{ width: 150 }}
+            resizeMode="contain"
+         />
          {props.rightButton !== undefined ? (
             <RightComponent {...props} />
          ) : <View style={styles.offset} />}
