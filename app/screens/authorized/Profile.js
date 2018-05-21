@@ -68,7 +68,7 @@ export default class Profile extends Component {
 
             <View style={styles.buttons}>
                <Button
-                  title="SIGN OUT"
+                  title="Sign out"
                   fontFamily={appFont}
                   buttonStyle={styles.buttonSignOut}
                   backgroundColor={appTextColor}

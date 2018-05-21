@@ -21,7 +21,7 @@ export const HeaderLeft = ({ icon, text, onPress, color }) => (
          color={color || '#FFF'}
       />
       <Text style={[styles.textLeft, { color: color || '#FFF' }]}> 
-         {` ${text}` || null }
+         { text !== undefined ? ` ${text}` : null }
       </Text>
    </TouchableOpacity>
 );
@@ -41,11 +41,13 @@ export const HeaderRight = ({ icon, onPress }) => (
 );
 
 export const HeaderCenter = () => (
-   <Image
-      style={{ width: 150 }}
-      resizeMode="contain"   
-      source={logo}
-   />
+   <View style={styles.headerCenter}>
+      <Image
+         style={{ width: 150 }}
+         resizeMode="contain"   
+         source={logo}
+      />
+   </View>
 );
 
 const Header = props => {
@@ -84,10 +86,9 @@ export default Header;
 
 const styles = {
    headerCenter: {
-      color: '#fff',
-      fontSize: 20,
-      fontFamily: appFont,
-      // fontWeight: '600',
+      height: '100%',
+      alignItems: 'center',
+      justifyContent: 'center'
    },
    headerLeftContainer: {
       flexDirection: 'row', 

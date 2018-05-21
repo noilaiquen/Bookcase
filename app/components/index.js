@@ -7,6 +7,7 @@ import Review from './Review';
 import TabBarComponent from './TabBarComponent';
 import ReviewForm from './ReviewForm';
 import ReviewListItem from './ReviewListItem';
+import FormSignIn from './FormSignIn';
 
 export { 
    BookcaseListItem,
@@ -20,5 +21,6 @@ export {
    Review,
    TabBarComponent,
    ReviewForm,
-   ReviewListItem
+   ReviewListItem,
+   FormSignIn
 };
