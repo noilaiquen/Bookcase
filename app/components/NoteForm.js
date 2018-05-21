@@ -10,12 +10,12 @@ import { appTextColor, appFont } from '../config/constants';
 
 const screen = Dimensions.get('window');
 
-const ReviewForm = ({ isShow, onSubmit, onInputText, onCancel, text }) => (
+const NoteForm = ({ isShow, onSubmit, onInputText, onCancel, text }) => (
    <Modal
       animationType="slide"
       transparent
       visible={isShow}
-      onRequestClose={() => console.log(11)}
+      onRequestClose={() => null}
    >
       <View style={{ flex: 1 }}>
          <View style={{ flex: 1 }} />
@@ -23,7 +23,7 @@ const ReviewForm = ({ isShow, onSubmit, onInputText, onCancel, text }) => (
             <View style={{ flex: 1 }}>
                <TextInput
                   style={{ padding: 5, fontFamily: appFont }}   
-                  placeholder="Pick a review..."
+                  placeholder="Pick a note..."
                   multiline
                   numberOfLines={4}
                   onChangeText={onInputText}
@@ -31,7 +31,7 @@ const ReviewForm = ({ isShow, onSubmit, onInputText, onCancel, text }) => (
                />
             </View> 
             <Button
-               title="OK"
+               title="Ok"
                rounded
                backgroundColor={appTextColor}
                fontFamily={appFont}
@@ -39,7 +39,7 @@ const ReviewForm = ({ isShow, onSubmit, onInputText, onCancel, text }) => (
             />
             <View style={{ height: 5 }} />
             <Button
-               title="CANCEL"
+               title="Cancel"
                rounded
                textStyle={styles.textStyle}
                buttonStyle={styles.buttonStyle}
@@ -53,7 +53,7 @@ const ReviewForm = ({ isShow, onSubmit, onInputText, onCancel, text }) => (
    </Modal>
 );
 
-export default ReviewForm;
+export default NoteForm;
 
 const styles = {
    container: {

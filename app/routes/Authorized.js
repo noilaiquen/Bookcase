@@ -7,7 +7,7 @@ import Explore from '../screens/authorized/Explore';
 import Profile from '../screens/authorized/Profile';
 // import Lists from '../screens/authorized/Lists';
 import ViewBook from '../screens/authorized/ViewBook';
-import ListReview from '../screens/authorized/ListReview';
+import ListNote from '../screens/authorized/ListNote';
 import Add from '../screens/authorized/Add';
 import TabBarComponent from '../components/TabBarComponent';
 import { appTextColor, appFont } from '../config/constants';
@@ -120,8 +120,8 @@ const Authorized = StackNavigator({
          gesturesEnabled: false
       }
    },
-   Reviews: {
-      screen: ListReview,
+   notes: {
+      screen: ListNote,
       navigationOptions: {
          header: null,
          gesturesEnabled: false

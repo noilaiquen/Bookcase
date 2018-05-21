@@ -6,31 +6,31 @@ import {
 import { appFont, darkColor, appTextColor } from '../config/constants';
 import { timeAgo } from '../utils';
 
-const ReviewListItem = ({ review }) => (
-   <View style={styles.reviewContainer}>
-      <View style={styles.reviewInfo} >
-         <Text style={styles.reviewerText}>{review.name}</Text>
-         <Text style={styles.timeText}> {` ${timeAgo(review.datetimeReview)}`}</Text>
+const NoteListItem = ({ note }) => (
+   <View style={styles.noteContainer}>
+      <View style={styles.noteInfo} >
+         <Text style={styles.noteerText}>{note.name}</Text>
+         <Text style={styles.timeText}> {` ${timeAgo(note.datetimeNote)}`}</Text>
       </View>
       <View>
-         <Text style={styles.contentText}>{review.content}</Text>
+         <Text style={styles.contentText}>{note.content}</Text>
       </View>
    </View>
 );
-export default ReviewListItem;
+export default NoteListItem;
 
 const styles = {
-   reviewContainer: {
+   noteContainer: {
       paddingBottom: 5,
       marginBottom: 10,
       borderBottomWidth: 0.5,
       borderColor: darkColor
    },
-   reviewInfo: {
+   noteInfo: {
       flexDirection: 'row',
       alignItems: 'center'
    },
-   reviewerText: {
+   noteerText: {
       fontFamily: appFont,
       color: appTextColor
    },

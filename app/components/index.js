@@ -3,10 +3,10 @@ import BookOverview from './BookOverview';
 import Header, { HeaderLeft, HeaderCenter, HeaderRight } from './Header';
 import HeaderBookcase from './HeaderBookcase';
 import Loading from './Loading';
-import Review from './Review';
+import Note from './Note';
 import TabBarComponent from './TabBarComponent';
-import ReviewForm from './ReviewForm';
-import ReviewListItem from './ReviewListItem';
+import NoteForm from './NoteForm';
+import NoteListItem from './NoteListItem';
 import FormSignIn from './FormSignIn';
 
 export { 
@@ -18,9 +18,9 @@ export {
    HeaderRight,
    HeaderCenter,
    Loading,
-   Review,
+   Note,
    TabBarComponent,
-   ReviewForm,
-   ReviewListItem,
+   NoteForm,
+   NoteListItem,
    FormSignIn
 };

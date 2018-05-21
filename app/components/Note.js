@@ -2,21 +2,21 @@ import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, ToastAndroid, ActivityIndicator } from 'react-native';
 import { Card, Button } from 'react-native-elements';
 import moment from 'moment';
-import { ReviewForm, ReviewListItem } from './index';
+import { NoteForm, NoteListItem } from './index';
 import { firebaseApp } from '../config/firebaseConfig';
 import { appTextColor, appFont, appColor } from '../config/constants';
 import global from '../config/global';
 
-class Review extends Component {
+class Note extends Component {
    constructor(props) {
       super(props);
       this.state = {
          showForm: false,
          text: '',
-         reviews: [],
+         notes: [],
          isLoading: false
       };
-      this.ref = firebaseApp.database().ref('reviews');
+      this.ref = firebaseApp.database().ref('notes');
       this.onShowForm = this.onShowForm.bind(this);
       this.onInputText = this.onInputText.bind(this);
       this.onCancel = this.onCancel.bind(this);
@@ -24,7 +24,7 @@ class Review extends Component {
    }
 
    componentDidMount() {
-      this.fetchReviews();
+      this.fetchNotes();
    }
 
    onShowForm() {
@@ -53,7 +53,7 @@ class Review extends Component {
          await this.ref.child(bookId).push({
             name: 'Thanh Binh Nguyen',
             content: text,
-            datetimeReview: moment().format('YYYY-MM-DD HH:mm:ss')
+            datetimeNote: moment().format('YYYY-MM-DD HH:mm:ss')
          });
          this.setState({
             showForm: false,
@@ -65,30 +65,30 @@ class Review extends Component {
       }
    }
 
-   fetchReviews = async () => {
+   fetchNotes = async () => {
       this.setState({ isLoading: true });
       const { bookId } = this.props;
-      let reviews = [];
+      let notes = [];
 
       this.ref.child(bookId).limitToFirst(5).once('value').then(snapshot => {
          snapshot.forEach(childSnapshot => {
-            reviews.push({
+            notes.push({
                key: childSnapshot.key,
                name: childSnapshot.val().name,
                content: childSnapshot.val().content,
-               datetimeReview: childSnapshot.val().datetimeReview
+               datetimeNote: childSnapshot.val().datetimeNote
             });
          });
-         this.setState({ reviews, isLoading: false });
+         this.setState({ notes, isLoading: false });
       });
    }
    
    render() {
-      const { reviews, isLoading } = this.state;
+      const { notes, isLoading } = this.state;
       return (
          <View>
             <Card 
-               title="REVIEWS"
+               title="NOTE"
                containerStyle={styles.containerStyle}
                titleStyle={styles.cardTitle}
             >
@@ -102,17 +102,17 @@ class Review extends Component {
                   </View>
                ) : (
                   <View style={{ flex: 1 }}>
-                     {reviews.length === 0 ? (
-                        <Text style={styles.noReviewText}>No review</Text>
-                     ) : reviews.map(review => <ReviewListItem review={review} key={review.key} />) }      
+                     {notes.length === 0 ? (
+                        <Text style={styles.noNoteText}>No note</Text>
+                     ) : notes.map(note => <NoteListItem note={note} key={note.key} />) }      
                   </View>
                )}   
 
                <View>
-                  {reviews.length > 0 && (
+                  {notes.length > 0 && (
                      <TouchableOpacity
                         style={styles.btnShowMore}
-                        onPress={() => this.props.navigation.navigate('Reviews', { bookId: this.props.bookId })}
+                        onPress={() => this.props.navigation.navigate('notes', { bookId: this.props.bookId })}
                      >
                         <Text style={styles.textShowMore}>Show more</Text>
                      </TouchableOpacity>
@@ -120,7 +120,7 @@ class Review extends Component {
 
                   <Button
                      rounded
-                     title="WRITE A REVIEW"
+                     title="Write a note"
                      backgroundColor={appTextColor}
                      onPress={this.onShowForm}
                      fontFamily={appFont}
@@ -128,7 +128,7 @@ class Review extends Component {
                </View>
             </Card>
       
-            <ReviewForm
+            <NoteForm
                isShow={this.state.showForm}
                onShowForm={this.onShowForm}
                onInputText={this.onInputText}
@@ -141,7 +141,7 @@ class Review extends Component {
    }
 }
 
-export default Review;
+export default Note;
 
 const styles = {
    containerStyle: {
@@ -166,7 +166,7 @@ const styles = {
       fontFamily: appFont,
       color: appColor
    },
-   noReviewText: {
+   noNoteText: {
       fontFamily: appFont,
       alignSelf: 'center',
       marginBottom: 15

@@ -10,7 +10,7 @@ import {
    DeviceEventEmitter
 } from 'react-native';
 import { Button, Icon, Rating } from 'react-native-elements';
-import { Header, BookOverview, Review } from '../../components';
+import { Header, BookOverview, Note } from '../../components';
 import { firebaseApp } from '../../config/firebaseConfig';
 import { appTextColor, darkColor, appFont, appColor } from '../../config/constants';
 import { DatePicker } from '../../utils';
@@ -192,7 +192,7 @@ export default class ViewBook extends Component {
                   </View>
                </View>
                
-               <Review {...this.props} bookId={bookId} />
+               <Note {...this.props} bookId={bookId} />
             </View>
          </ScrollView>
       );

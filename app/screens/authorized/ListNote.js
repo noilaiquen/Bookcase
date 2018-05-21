@@ -5,45 +5,45 @@ import {
    StatusBar,
    ActivityIndicator
 } from 'react-native';
-import { ReviewListItem, HeaderLeft } from '../../components';
+import { NoteListItem, HeaderLeft } from '../../components';
 import { firebaseApp } from '../../config/firebaseConfig';
 import { appColor, appTextColor } from '../../config/constants';
 
-export default class ListReview extends Component {
+export default class ListNote extends Component {
    constructor(props) {
       super(props);
       this.state = {
          isLoading: false,
-         reviews: []
+         notes: []
       };
-      this.ref = firebaseApp.database().ref('reviews');
+      this.ref = firebaseApp.database().ref('notes');
    }
 
    componentDidMount() {
-      this.fetchReviews();
+      this.fectNotes();
    }
 
-   fetchReviews = async () => {
+   fectNotes = async () => {
       this.setState({ isLoading: true });
       
       const { bookId } = this.props.navigation.state.params;
-      let reviews = [];
+      let notes = [];
 
       this.ref.child(bookId).once('value').then(snapshot => {
          snapshot.forEach(childSnapshot => {
-            reviews.push({
+            notes.push({
                key: childSnapshot.key,
                name: childSnapshot.val().name,
                content: childSnapshot.val().content,
-               datetimeReview: childSnapshot.val().datetimeReview
+               datetimeNote: childSnapshot.val().datetimeNote
             });
          });
-         this.setState({ reviews, isLoading: false });
+         this.setState({ notes, isLoading: false });
       });
    }
 
    render() {
-      const { isLoading, reviews } = this.state;
+      const { isLoading, notes } = this.state;
       return (
          <View style={styles.container}>
             <StatusBar barStyle="dark-content" />   
@@ -65,10 +65,10 @@ export default class ListReview extends Component {
                </View>
             ) : (
                <FlatList
-                  data={reviews}
+                  data={notes}
                   keyExtractor={(item) => item.key}  //eslint-disable-line
                   renderItem={({ item }) => (
-                     <ReviewListItem review={item} />
+                     <NoteListItem note={item} />
                   )}
                />
             )}
