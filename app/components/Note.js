@@ -51,7 +51,7 @@ class Note extends Component {
       const { text } = this.state;
       try {
          await this.ref.child(bookId).push({
-            name: 'Thanh Binh Nguyen',
+            name: global.user.displayName,
             content: text,
             datetimeNote: moment().format('YYYY-MM-DD HH:mm:ss')
          });

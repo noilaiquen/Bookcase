@@ -3,7 +3,7 @@ import Root from './routes/Root';
 import Container from './screens/Container';
 import Splash from './screens/Splash';
 import { firebaseApp } from './config/firebaseConfig';
-import global from './config/global';
+import { setUserToGlobalStore } from './utils';
 
 console.ignoredYellowBox = [
    'Setting a timer'
@@ -23,10 +23,12 @@ export default class App extends Component {
    componentDidMount() {
       this.authSubscription = firebaseApp.auth().onAuthStateChanged(user => {
          if (user) {
-            this.setState({
-               authenticated: true,
-               loading: false
-            }, () => { global.user = user; });
+            setUserToGlobalStore(user).then(() => {
+               this.setState({
+                  authenticated: true,
+                  loading: false
+               });
+            });
          } else {
             this.setState({ 
                loading: false,

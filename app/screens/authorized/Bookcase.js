@@ -7,15 +7,16 @@ import {
 import { HeaderBookcase, BookcaseListItem } from '../../components';
 import { appFont } from '../../config/constants';
 import { firebaseApp } from '../../config/firebaseConfig';
+import global from '../../config/global';
 import imageHeader from '../../assets/header4.jpg';
 
 export default class Bookcase extends Component {
    static navigationOptions = props => ({
       header: <HeaderBookcase
-         title="bookcase"   
-         search
-         imageBackground={imageHeader}
-         {...props}
+      title="bookcase"   
+      search
+      imageBackground={imageHeader}
+      {...props}
       />
    });
    
@@ -29,8 +30,7 @@ export default class Bookcase extends Component {
          textSearch: '',
          errorMessage: ''
       };
-
-      this.ref = firebaseApp.database().ref('bookcase');
+      this.ref = firebaseApp.database().ref('bookcase').child(global.user.uid);
       this.fetchBooks = this.fetchBooks.bind(this);
       this.onSearch = this.onSearch.bind(this);
    }

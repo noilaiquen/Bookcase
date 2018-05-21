@@ -42,7 +42,7 @@ export default class Edit extends Component {
    constructor(props) {
       super(props);
       this.state = initState;
-      this.ref = firebaseApp.database().ref('bookcase');
+      this.ref = firebaseApp.database().ref('bookcase').child(global.user.uid);
 
       this.onUpload = this.onUpload.bind(this);
       this.chooseImage = this.chooseImage.bind(this);

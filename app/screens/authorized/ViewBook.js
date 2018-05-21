@@ -41,7 +41,7 @@ export default class ViewBook extends Component {
       };
       this.onRemove = this.onRemove.bind(this);
       this.onUpdate = this.onUpdate.bind(this);
-      this.ref = firebaseApp.database().ref('bookcase');
+      this.ref = firebaseApp.database().ref('bookcase').child(global.user.uid);
    }
 
    componentDidMount = () => {
