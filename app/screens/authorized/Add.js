@@ -265,8 +265,8 @@ const styles = StyleSheet.create({
    },
    image: {
       marginHorizontal: 15,
-      width: 120,
-      height: 180,
+      width: 100,
+      height: 160,
       resizeMode: 'contain'
    },
    switchStyle: {
