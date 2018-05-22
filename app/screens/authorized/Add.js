@@ -15,7 +15,7 @@ import { FormLabel, FormInput, Button, Icon } from 'react-native-elements';
 import moment from 'moment';
 import { Header } from '../../components';
 import { Picker, DatePicker } from '../../utils';
-import noImage from '../../assets/no-image.png';
+import noCover from '../../assets/no_cover.jpg';
 import Upload from '../../api/Upload';
 import global from '../../config/global';
 import { firebaseApp } from '../../config/firebaseConfig';
@@ -119,7 +119,7 @@ export default class Edit extends Component {
                <TouchableOpacity onPress={this.chooseImage}>
                   <Image 
                      style={image}
-                     source={imageSource !== null ? imageSource : noImage} 
+                     source={imageSource !== null ? imageSource : noCover} 
                   />
                </TouchableOpacity>
                {
@@ -266,8 +266,8 @@ const styles = StyleSheet.create({
    image: {
       marginHorizontal: 15,
       width: 120,
-      height: 150,
-      resizeMode: 'cover'
+      height: 180,
+      resizeMode: 'contain'
    },
    switchStyle: {
       position: 'absolute',
