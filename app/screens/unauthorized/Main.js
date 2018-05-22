@@ -24,7 +24,7 @@ class Main extends Component {
                   onPress={() => this.props.navigation.navigate('SignIn')}
                />
                <Button
-                  title="Register now"
+                  title="Create account"
                   fontFamily={appFont}
                   color={appTextColor}
                   backgroundColor="#FFF" 
