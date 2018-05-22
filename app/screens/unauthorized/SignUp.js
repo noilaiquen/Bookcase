@@ -112,7 +112,7 @@ class SignUp extends Component {
                />
 
                <Button 
-                  title="Sign up now"
+                  title="Register"
                   loading={this.state.loading}
                   fontFamily={appFont}
                   buttonStyle={styles.buttonStyle}
