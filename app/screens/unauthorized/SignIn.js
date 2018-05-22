@@ -70,14 +70,14 @@ class SignIn extends Component {
       }
 
       try {
-         await firebase.auth().signInWithEmailAndPassword(email, password);
+         await firebaseApp.auth().signInWithEmailAndPassword(email, password);
       } catch (err) {
          let message;
          if (err.code === 'auth/invalid-email') {
-            message = err.message;
+            message = 'The email invalid';
          }
          if (err.code === 'auth/user-not-found') {
-            message = 'User not exist.';
+            message = 'Account not found..';
          }
          if (err.code === 'auth/wrong-password') {
             message = 'The password invalid.';
@@ -97,8 +97,8 @@ class SignIn extends Component {
          const credential = firebase.auth.GoogleAuthProvider.credential(user.idToken, user.accessToken);
          await firebaseApp.auth().signInWithCredential(credential);
       } catch (err) {
-         // console.log('WRONG SIGNIN', err);
-         this.setState({ loading: false }, () => Alert.alert('WRONG GOOGLE SIGN IN!'));
+         // console.log(err);
+         this.setState({ loading: false }, () => Alert.alert('Wrong google sign in', JSON.stringify(err)));
       }
    }
 
@@ -114,7 +114,7 @@ class SignIn extends Component {
          await firebaseApp.auth().signInWithCredential(credential);
       } catch (err) {
          // console.log(err);
-         this.setState({ loading: false }, () => Alert.alert('WRONG FACEBOOK SIGN IN!'));
+         this.setState({ loading: false }, () => Alert.alert('Wrong facebook sign in', JSON.stringify(err)));
       }
    }
 
@@ -136,7 +136,6 @@ class SignIn extends Component {
                   setPassword={this.setPassword}
                />
                <Button
-                  loading={this.state.loading}
                   title="Sign in with google"
                   backgroundColor="#FFFFFF"
                   color="#4285f4"
@@ -146,7 +145,6 @@ class SignIn extends Component {
                   onPress={this.googleSignIn}
                />
                <Button
-                  loading={this.state.loading}
                   title="Sign in with facebook"
                   backgroundColor="#4267b2"
                   icon={{ name: 'facebook', type: 'font-awesome' }}
