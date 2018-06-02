@@ -219,7 +219,7 @@ export default class Edit extends Component {
                </View>   
                <View>
                   <Button
-                     title="ADD BOOK"
+                     title="Add book"
                      onPress={this.onUpload}
                      containerViewStyle={{ marginTop: 50 }}   
                      buttonStyle={buttonStyle}
