@@ -79,8 +79,7 @@ export const Tabs = TabNavigator({
       },
    }
 }, {
-   // initialRouteName: 'Bookcase',
-   initialRouteName: 'Add',
+   initialRouteName: 'Bookcase',
    tabBarPosition: 'bottom',
    tabBarComponent: TabBarComponent,
    swipeEnabled: false,
