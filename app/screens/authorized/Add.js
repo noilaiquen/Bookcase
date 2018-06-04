@@ -130,12 +130,12 @@ export default class Add extends Component {
       const { title, authors, description, pageCount, imageLinks } = result;
       this.setState({
          title,
-         author: authors[0],
-         page: pageCount,
+         author: authors !== undefined ? authors[0] : 'Undefined',
+         page: pageCount !== undefined ? Number(pageCount) : 0,
          summary: description,
          isFinished: false,
          dateFinished: currentDate,
-         thumbnail: imageLinks.thumbnail,
+         thumbnail: imageLinks.thumbnail !== undefined ? imageLinks.thumbnail : defaultThumbnail,
          isSearch: false,
          searchText: '',
          searchResults: []
@@ -182,37 +182,40 @@ export default class Add extends Component {
       return (
          <View style={container}>
             <Header centerComponent />   
-            <SearchBar
-               lightTheme
-               value={searchText}
-               onChangeText={text => this.searchGoogleBook(text)}
-               onClear={() => this.setState({ searchText: '', searchResults: [] })}
-               clearIcon={{ type: 'font-awesome', name: 'cancel' }}
-               placeholder='Search google book'
-               containerStyle={searchContainer}
-               inputStyle={searchInput}
-            />
-            {isSearch && (
-               <SearchList
-                  onSelect={this.onSelectSearchResult}   
-                  data={searchResults}
-               />
-            )}
-            <View style={{ height: 15 }} />
             <ScrollView contentContainerStyle={scrollview}>
+               <SearchBar
+                  lightTheme
+                  value={searchText}
+                  onChangeText={text => this.searchGoogleBook(text)}
+                  onClear={() => this.setState({ searchText: '', searchResults: [] })}
+                  clearIcon={{ type: 'font-awesome', name: 'cancel' }}
+                  placeholder='Search google book'
+                  containerStyle={searchContainer}
+                  inputStyle={searchInput}
+               />
+
+               {isSearch && (
+                  <SearchList
+                     onSelect={this.onSelectSearchResult}   
+                     data={searchResults}
+                  />
+               )}
+
+               <View style={{ height: 15 }} />
+
                <TouchableOpacity onPress={this.chooseImage}>
                   <Image 
                      style={image}
                      source={thumb !== null ? thumb : noCover} 
                   />
                </TouchableOpacity>
-               {
-                  imageSource !== null && (
-                     <TouchableOpacity style={removeImage} onPress={this.onRemoveImage}>
-                        <Text style={textRemoveImage}>REMOVE</Text>
-                     </TouchableOpacity>
-                  )
-               }
+
+               {imageSource !== null && (
+                  <TouchableOpacity style={removeImage} onPress={this.onRemoveImage}>
+                     <Text style={textRemoveImage}>REMOVE</Text>
+                  </TouchableOpacity>
+               )}
+
                <View>
                   <FormLabel labelStyle={labelStyle}>Title</FormLabel>
                   <FormInput
@@ -226,6 +229,7 @@ export default class Add extends Component {
                      onSubmitEditing={() => this.authorInput.focus()}
                   />
                </View>
+
                <View>
                   <FormLabel labelStyle={labelStyle}>Author</FormLabel>
                   <FormInput
@@ -239,6 +243,7 @@ export default class Add extends Component {
                      onSubmitEditing={() => this.pageInput.focus()}
                   />
                </View>
+
                <View>
                   <FormLabel labelStyle={labelStyle}>Page</FormLabel>
                   <FormInput
@@ -253,6 +258,7 @@ export default class Add extends Component {
                      onSubmitEditing={() => this.summaryInput.focus()}
                   />
                </View>
+
                <View>
                   <FormLabel labelStyle={labelStyle}>Summary</FormLabel>
                   <View style={textareaContainer}>
@@ -268,6 +274,7 @@ export default class Add extends Component {
                      />
                   </View>
                </View>
+
                <View style={inputGroup}>
                   <View>
                      <FormLabel labelStyle={labelStyle}>Finished Book</FormLabel>
@@ -300,7 +307,8 @@ export default class Add extends Component {
                         </TouchableOpacity>
                      </View>
                   ) : null }
-               </View>   
+               </View>
+
                <View>
                   <Button
                      title="Add book"
