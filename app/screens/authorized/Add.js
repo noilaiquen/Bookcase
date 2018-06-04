@@ -11,15 +11,31 @@ import {
    ToastAndroid,
    DeviceEventEmitter
 } from 'react-native';
-import { FormLabel, FormInput, Button, Icon } from 'react-native-elements';
+import {
+   FormLabel,
+   FormInput,
+   Button,
+   Icon,
+   SearchBar
+} from 'react-native-elements';
 import moment from 'moment';
-import { Header } from '../../components';
-import { Picker, DatePicker } from '../../utils';
+import {
+   Header,
+   SearchList
+} from '../../components';
+import {
+   Picker,
+   DatePicker
+} from '../../utils';
 import noCover from '../../assets/no_cover.jpg';
 import Upload from '../../api/Upload';
 import global from '../../config/global';
 import { firebaseApp } from '../../config/firebaseConfig';
-import { appTextColor, darkColor, appFont } from '../../config/constants';
+import {
+   appTextColor,
+   darkColor,
+   appFont
+} from '../../config/constants';
 
 const currentDate = moment().format('YYYY-MM-DD');
 const defaultThumbnail = 'https://firebasestorage.googleapis.com/v0/b/bookcase-d1e17.appspot.com/o/thumbnail%2FNo_book_cover_lg.jpg?alt=media&token=18f98f4f-1cfa-4610-b6db-bd7478849a20';
@@ -31,10 +47,14 @@ const initState = {
    summary: '',
    isFinished: false,
    dateFinished: currentDate,
-   imageSource: null
+   imageSource: null,
+   thumbnail: null,
+   isSearch: false,
+   searchText: '',
+   searchResults: []
 };
 
-export default class Edit extends Component {
+export default class Add extends Component {
    static navigationOptions = {
       header: null
    };
@@ -47,10 +67,16 @@ export default class Edit extends Component {
       this.onUpload = this.onUpload.bind(this);
       this.chooseImage = this.chooseImage.bind(this);
       this.onRemoveImage = this.onRemoveImage.bind(this);
+      this.onSelectSearchResult = this.onSelectSearchResult.bind(this);
    }
 
    onUpload = async () => {
-      const { title, author, isFinished, dateFinished, page, imageSource, summary } = this.state;
+      const {
+         title, author, isFinished,
+         dateFinished, page, imageSource,
+         summary, thumbnail
+      } = this.state;
+      
       global.setLoadingVisible(true);
 
       if (title === '' || author === '') {
@@ -59,13 +85,17 @@ export default class Edit extends Component {
          return;
       }
 
-      let thumbnail = null;
+      let thumbnailLink = null;
       if (imageSource !== null) {
          try {
-            thumbnail = await Upload(imageSource.uri);
+            thumbnailLink = await Upload(imageSource.uri);
          } catch (error) {
             console.log('upload image failed!');
          }
+      }
+
+      if (thumbnail !== null) {
+         thumbnailLink = thumbnail;
       }
 
       const dataPost = {
@@ -76,7 +106,7 @@ export default class Edit extends Component {
          is_finished: isFinished,
          date_finished: isFinished ? dateFinished : null,
          page: Number(page),
-         thumbnail: thumbnail !== null ? thumbnail : defaultThumbnail
+         thumbnail: thumbnailLink !== null ? thumbnailLink : defaultThumbnail
       };
 
       try {
@@ -96,6 +126,36 @@ export default class Edit extends Component {
       this.setState({ imageSource: null });
    }
 
+   onSelectSearchResult = result => {
+      const { title, authors, description, pageCount, imageLinks } = result;
+      this.setState({
+         title,
+         author: authors[0],
+         page: pageCount,
+         summary: description,
+         isFinished: false,
+         dateFinished: currentDate,
+         thumbnail: imageLinks.thumbnail,
+         isSearch: false,
+         searchText: '',
+         searchResults: []
+      });
+   }
+
+   searchGoogleBook = searchText => {
+      this.setState({ searchText }, () => {
+         if (searchText !== '') {
+            this.setState({ isSearch: true });
+            fetch(`https://www.googleapis.com/books/v1/volumes?q=${searchText}&maxResults=5`)
+               .then(response => response.json())
+               .then(responseJson => this.setState({ searchResults: responseJson.items }))
+               .catch(error => console.log(error));
+         } else {
+            this.setState({ isSearch: false });
+         }
+      });
+   }
+
    chooseImage = () => {
       Picker((source, dataBase64) => this.setState({
          imageSource: source,
@@ -109,25 +169,49 @@ export default class Edit extends Component {
          buttonStyle, image, scrollview, 
          switchStyle, removeImage,
          textRemoveImage, inputGroup, inputGroupItem,
-         textarea, textareaContainer } = styles;
-      const { imageSource, title, author, isFinished, dateFinished, page, summary } = this.state;
+         textarea, textareaContainer, searchContainer, searchInput
+      } = styles;
+      const { 
+         imageSource, title, author,
+         isFinished, dateFinished, page,
+         summary, isSearch, searchResults,
+         searchText, thumbnail
+      } = this.state;
+
+      const thumb = thumbnail !== null ? { uri: thumbnail } : imageSource;
       return (
          <View style={container}>
+            <Header centerComponent />   
+            <SearchBar
+               lightTheme
+               value={searchText}
+               onChangeText={text => this.searchGoogleBook(text)}
+               onClear={() => this.setState({ searchText: '', searchResults: [] })}
+               clearIcon={{ type: 'font-awesome', name: 'cancel' }}
+               placeholder='Search google book'
+               containerStyle={searchContainer}
+               inputStyle={searchInput}
+            />
+            {isSearch && (
+               <SearchList
+                  onSelect={this.onSelectSearchResult}   
+                  data={searchResults}
+               />
+            )}
+            <View style={{ height: 15 }} />
             <ScrollView contentContainerStyle={scrollview}>
-               <Header centerComponent />   
-               <View style={{ height: 15 }} />
                <TouchableOpacity onPress={this.chooseImage}>
                   <Image 
                      style={image}
-                     source={imageSource !== null ? imageSource : noCover} 
+                     source={thumb !== null ? thumb : noCover} 
                   />
                </TouchableOpacity>
                {
-                  imageSource !== null ? (
+                  imageSource !== null && (
                      <TouchableOpacity style={removeImage} onPress={this.onRemoveImage}>
                         <Text style={textRemoveImage}>REMOVE</Text>
                      </TouchableOpacity>
-                  ) : null
+                  )
                }
                <View>
                   <FormLabel labelStyle={labelStyle}>Title</FormLabel>
@@ -236,8 +320,7 @@ export default class Edit extends Component {
 const styles = StyleSheet.create({
    container: {
       flex: 1,
-      backgroundColor: '#FFF',
-      position: 'relative'
+      backgroundColor: '#FFF'
    },
    scrollview: {
       paddingBottom: 15
@@ -265,8 +348,8 @@ const styles = StyleSheet.create({
    },
    image: {
       marginHorizontal: 15,
-      width: 100,
-      height: 160,
+      width: 80,
+      height: 100,
       resizeMode: 'contain'
    },
    switchStyle: {
@@ -297,6 +380,17 @@ const styles = StyleSheet.create({
       borderRadius: 5,
       borderWidth: 1,
       marginHorizontal: 15
+   },
+   searchContainer: {
+      backgroundColor: '#FFF',
+      marginHorizontal: 15,
+      borderTopWidth: 0,
+      borderBottomWidth: 1,
+      borderColor: darkColor,
+   },
+   searchInput: {
+      backgroundColor: '#FFF',
+      fontFamily: appFont
    }
 });
 

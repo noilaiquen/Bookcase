@@ -8,6 +8,8 @@ import TabBarComponent from './TabBarComponent';
 import NoteForm from './NoteForm';
 import NoteListItem from './NoteListItem';
 import FormSignIn from './FormSignIn';
+import SearchList from './SearchList';
+import SearchListItem from './SearchListItem';
 
 export { 
    BookcaseListItem,
@@ -22,5 +24,7 @@ export {
    TabBarComponent,
    NoteForm,
    NoteListItem,
-   FormSignIn
+   FormSignIn,
+   SearchList,
+   SearchListItem
 };
