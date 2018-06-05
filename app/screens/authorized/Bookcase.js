@@ -4,7 +4,11 @@ import {
    FlatList,
    DeviceEventEmitter
 } from 'react-native';
-import { HeaderBookcase, BookcaseListItem } from '../../components';
+import { 
+   HeaderBookcase,
+   BookcaseListItem,
+   BookcaseEmpty
+} from '../../components';
 import { appFont } from '../../config/constants';
 import { firebaseApp } from '../../config/firebaseConfig';
 import global from '../../config/global';
@@ -95,17 +99,21 @@ export default class Bookcase extends Component {
       const { books, booksSearch, refreshing, isSearching } = this.state;
       return (
          <View style={styles.container}>
-            <FlatList
-               data={isSearching ? booksSearch : books}
-               keyExtractor={(item) => item._id}  //eslint-disable-line
-               renderItem={({ item }) => (
-                  <BookcaseListItem book={item} {...this.props} />
-               )}
-               refreshing={refreshing}
-               onRefresh={this.fetchBooks}
-               keyboardShouldPersistTaps="always"
-               keyboardDismissMode="on-drag"
-            />
+            {books.length === 0 ? (
+               <BookcaseEmpty {...this.props} />
+            ) : (
+               <FlatList
+                  data={isSearching ? booksSearch : books}
+                  keyExtractor={(item) => item._id}  //eslint-disable-line
+                  renderItem={({ item }) => (
+                     <BookcaseListItem book={item} {...this.props} />
+                  )}
+                  refreshing={refreshing}
+                  onRefresh={this.fetchBooks}
+                  keyboardShouldPersistTaps="always"
+                  keyboardDismissMode="on-drag"
+               />
+            )} 
          </View>
       );
    }

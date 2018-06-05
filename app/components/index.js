@@ -10,6 +10,7 @@ import NoteListItem from './NoteListItem';
 import FormSignIn from './FormSignIn';
 import SearchList from './SearchList';
 import SearchListItem from './SearchListItem';
+import BookcaseEmpty from './BookcaseEmpty';
 
 export { 
    BookcaseListItem,
@@ -26,5 +27,6 @@ export {
    NoteListItem,
    FormSignIn,
    SearchList,
-   SearchListItem
+   SearchListItem,
+   BookcaseEmpty
 };

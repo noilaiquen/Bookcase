@@ -19,6 +19,7 @@ export default class App extends Component {
       authenticated: false,
       loading: true
    };
+   
    componentDidMount() {
       handleAndroidBackButton(alertExit);
   
