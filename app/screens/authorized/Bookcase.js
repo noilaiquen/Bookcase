@@ -13,10 +13,10 @@ import imageHeader from '../../assets/header4.jpg';
 export default class Bookcase extends Component {
    static navigationOptions = props => ({
       header: <HeaderBookcase
-      title="bookcase"   
-      search
-      imageBackground={imageHeader}
-      {...props}
+         title="bookcase"   
+         search
+         imageBackground={imageHeader}
+         {...props}
       />
    });
    
@@ -45,6 +45,10 @@ export default class Bookcase extends Component {
          onSearch: this.onSearch,
          onClearSearch: () => this.setState({ textSearch: '', isSearching: false })
       });
+   }
+
+   componentWillUnmount = () => {
+      DeviceEventEmitter.removeListener('refreshBookcase');
    }
 
    onSearch = text => {

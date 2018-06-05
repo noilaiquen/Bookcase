@@ -3,7 +3,12 @@ import Root from './routes/Root';
 import Container from './screens/Container';
 import Splash from './screens/Splash';
 import { firebaseApp } from './config/firebaseConfig';
-import { setUserToGlobalStore } from './utils';
+import { 
+   alertExit,
+   setUserToGlobalStore,
+   handleAndroidBackButton,
+   removeAndroidBackButtonHandler
+} from './utils';
 
 console.ignoredYellowBox = [
    'Setting a timer'
@@ -21,6 +26,7 @@ export default class App extends Component {
    * (logged out) or an Object (logged in)
    */
    componentDidMount() {
+      handleAndroidBackButton(alertExit);
       this.authSubscription = firebaseApp.auth().onAuthStateChanged(user => {
          if (user) {
             setUserToGlobalStore(user).then(() => {
@@ -43,6 +49,7 @@ export default class App extends Component {
    * when the component unmounts.
    */
    componentWillUnmount() {
+      removeAndroidBackButtonHandler();
       this.authSubscription();
    }
 

@@ -308,12 +308,12 @@ export default class Add extends Component {
                      </View>
                   ) : null }
                </View>
-
+               
                <View>
                   <Button
                      title="Add book"
                      onPress={this.onUpload}
-                     containerViewStyle={{ marginTop: 50 }}   
+                     containerViewStyle={{ marginTop: 50 }}
                      buttonStyle={buttonStyle}
                      backgroundColor={appTextColor}
                      fontFamily={appFont}

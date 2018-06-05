@@ -1,5 +1,10 @@
 import moment from 'moment';
 
+import { 
+   handleAndroidBackButton,
+   removeAndroidBackButtonHandler,
+   alertExit
+} from './AndroindBackHandler';
 import DatePicker from './DatePicker';
 import Picker from './Picker';
 import global from '../config/global';
@@ -19,5 +24,8 @@ export {
    DatePicker,
    Picker,
    timeAgo,
-   setUserToGlobalStore
+   setUserToGlobalStore,
+   handleAndroidBackButton,
+   removeAndroidBackButtonHandler,
+   alertExit
 };
