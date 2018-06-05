@@ -19,14 +19,15 @@ export default class App extends Component {
       authenticated: false,
       loading: true
    };
-   /**
-   * When the App component mounts, we listen for any authentication
-   * state changes in Firebase.
-   * Once subscribed, the 'user' parameter will either be null 
-   * (logged out) or an Object (logged in)
-   */
    componentDidMount() {
       handleAndroidBackButton(alertExit);
+  
+      /**
+      * When the App component mounts, we listen for any authentication
+      * state changes in Firebase.
+      * Once subscribed, the 'user' parameter will either be null 
+      * (logged out) or an Object (logged in)
+      */
       this.authSubscription = firebaseApp.auth().onAuthStateChanged(user => {
          if (user) {
             setUserToGlobalStore(user).then(() => {
@@ -44,12 +45,13 @@ export default class App extends Component {
       });
    }
 
-   /**
-   * Don't forget to stop listening for authentication state changes
-   * when the component unmounts.
-   */
    componentWillUnmount() {
       removeAndroidBackButtonHandler();
+
+      /**
+      * Don't forget to stop listening for authentication state changes
+      * when the component unmounts.
+      */
       this.authSubscription();
    }
 
