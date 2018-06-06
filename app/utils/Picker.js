@@ -1,7 +1,7 @@
 import ImagePicker from 'react-native-image-picker';
 
 const Picker = cb => {
-   ImagePicker.showImagePicker((response) => {
+   ImagePicker.showImagePicker(response => {
       if (response.didCancel) {
          console.log('User cancelled image picker');
       } else if (response.error) {

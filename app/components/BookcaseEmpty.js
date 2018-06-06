@@ -6,14 +6,14 @@ import {
 } from 'react-native';
 import { appFont, appTextColor } from '../config/constants';
 
-const BookcaseEmpty = props => (
+const BookcaseEmpty = ({ navigation }) => (
    <View style={styles.container}>
       <Text style={styles.message}>You have no book!</Text>
       <Button
          title="Add book"
          color={appTextColor}
          style={styles.button}
-         onPress={() => props.navigation.navigate('Add')}
+         onPress={() => navigation.navigate('Add')}
       />
    </View>
 );

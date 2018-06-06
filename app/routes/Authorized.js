@@ -83,7 +83,7 @@ export const Tabs = TabNavigator({
    tabBarPosition: 'bottom',
    tabBarComponent: TabBarComponent,
    swipeEnabled: false,
-   animationEnabled: false,
+   animationEnabled: true,
    tabBarOptions: {
       showLabel: true,
       showIcon: true,
