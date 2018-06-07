@@ -4,7 +4,6 @@ import {
    View,
    ScrollView
 } from 'react-native';
-import { Header } from '../../components';
 import { appFont } from '../../config/constants';
 
 const list = [
@@ -35,16 +34,6 @@ const list = [
 ];
 
 export default class Explore extends Component {
-   static navigationOptions = () => ({
-      header: () => (
-         <Header
-            centerComponent={{
-               text: 'bookcase',
-            }}
-         />
-      )
-   })
-
    render() {
       return (
          <ScrollView contentContainerStyle={styles.container}>

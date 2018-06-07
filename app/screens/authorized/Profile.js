@@ -6,22 +6,11 @@ import {
    Image
 } from 'react-native';
 import { Button } from 'react-native-elements';
-import { Header } from '../../components';
 import { firebaseApp } from '../../config/firebaseConfig';
 import global from '../../config/global';
 import { appTextColor, appFont } from '../../config/constants';
 
 export default class Profile extends Component {
-   static navigationOptions = () => ({
-      header: () => (
-         <Header
-            centerComponent={{
-               text: 'bookcase',
-            }}
-         />
-      )
-   })
-
    constructor(props) {
       super(props);
       this.state = {

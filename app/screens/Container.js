@@ -3,7 +3,7 @@ import {
    View,
    StatusBar
 } from 'react-native';
-import { Loading } from '../components';
+import { Loading, LineConnectionFail } from '../components';
 import global from '../config/global';
 
 StatusBar.setBackgroundColor('transparent');
@@ -13,9 +13,11 @@ export default class Container extends Component {
    constructor(props) {
       super(props);
       this.state = {
-         loadingIsVisible: false
+         loadingIsVisible: false,
+         isConnection: true
       };
       global.setLoadingVisible = this.setLoadingVisible.bind(this);
+      global.setConnectionStatus = this.setConnectionStatus.bind(this);
    }
 
    setLoadingVisible = value => {
@@ -24,11 +26,18 @@ export default class Container extends Component {
       });
    }
 
+   setConnectionStatus = () => {
+      this.setState({
+         isConnection: !this.state.isConnection
+      });
+   }
+
    render() {
       return (
          <View style={styles.container}>
             <Loading isVisible={this.state.loadingIsVisible} />
-            {this.props.children}
+            <LineConnectionFail show={this.state.isConnection} />
+            {this.props.children} 
          </View>
       );
    }

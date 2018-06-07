@@ -19,10 +19,7 @@ import {
    SearchBar
 } from 'react-native-elements';
 import moment from 'moment';
-import {
-   Header,
-   SearchList
-} from '../../components';
+import { SearchList } from '../../components';
 import {
    Picker,
    DatePicker
@@ -55,10 +52,6 @@ const initState = {
 };
 
 export default class Add extends Component {
-   static navigationOptions = {
-      header: null
-   };
-
    constructor(props) {
       super(props);
       this.state = initState;
@@ -181,7 +174,6 @@ export default class Add extends Component {
       const thumb = thumbnail !== null ? { uri: thumbnail } : imageSource;
       return (
          <View style={container}>
-            <Header centerComponent />   
             <ScrollView contentContainerStyle={scrollview}>
                <SearchBar
                   lightTheme
@@ -312,7 +304,8 @@ export default class Add extends Component {
                <View>
                   <Button
                      title="Add book"
-                     onPress={this.onUpload}
+                     // onPress={this.onUpload}
+                     onPress={() => global.setConnectionStatus()}
                      containerViewStyle={{ marginTop: 50 }}
                      buttonStyle={buttonStyle}
                      backgroundColor={appTextColor}

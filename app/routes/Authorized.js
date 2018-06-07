@@ -9,7 +9,7 @@ import Profile from '../screens/authorized/Profile';
 import ViewBook from '../screens/authorized/ViewBook';
 import ListNote from '../screens/authorized/ListNote';
 import Add from '../screens/authorized/Add';
-import TabBarComponent from '../components/TabBarComponent';
+import { TabBarComponent, Header } from '../components';
 import { appTextColor, appFont } from '../config/constants';
 
 export const Tabs = TabNavigator({
@@ -26,7 +26,7 @@ export const Tabs = TabNavigator({
             />
       }
    },
-   Explore: {
+  /*  Explore: {
       screen: Explore,
       navigationOptions: {
          tabBarLabel: 'Explore',
@@ -38,7 +38,7 @@ export const Tabs = TabNavigator({
                color={tintColor}
             />
       },
-   },
+   }, */
    Add: {
       screen: Add,
       navigationOptions: {
@@ -103,6 +103,9 @@ export const Tabs = TabNavigator({
       style: {
          backgroundColor: '#FFF',
       },
+   },
+   navigationOptions: {
+      header: <Header centerComponent />
    }
 });
 

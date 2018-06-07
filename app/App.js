@@ -38,7 +38,7 @@ export default class App extends Component {
                });
             });
          } else {
-            this.setState({ 
+            this.setState({
                loading: false,
                authenticated: false,
             });

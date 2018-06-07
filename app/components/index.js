@@ -11,6 +11,7 @@ import FormSignIn from './FormSignIn';
 import SearchList from './SearchList';
 import SearchListItem from './SearchListItem';
 import BookcaseEmpty from './BookcaseEmpty';
+import LineConnectionFail from './LineConnectionFail';
 
 export { 
    BookcaseListItem,
@@ -28,5 +29,6 @@ export {
    FormSignIn,
    SearchList,
    SearchListItem,
-   BookcaseEmpty
+   BookcaseEmpty,
+   LineConnectionFail
 };
