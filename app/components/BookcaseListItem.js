@@ -17,7 +17,7 @@ export default class BookcaseListItem extends Component {
          <TouchableWithoutFeedback
             onPress={() => {
                Keyboard.dismiss();
-               this.props.navigation.navigate('ViewBook', { book_id: book._id });
+               this.props.navigation.navigate('ViewBook', { bookId: book._id });
             }}
          >
             <View style={styles.container}>

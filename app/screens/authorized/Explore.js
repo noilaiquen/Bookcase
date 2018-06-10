@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {
    Text,
    View,
+   Button,
    ScrollView
 } from 'react-native';
 import { appFont } from '../../config/constants';
@@ -41,7 +42,7 @@ export default class Explore extends Component {
                <View style={[styles.listItem, { backgroundColor: item.color }]} key={item.title}>
                   <Text style={styles.title}>{item.title}</Text>
                </View>
-            ))}   
+            ))}
          </ScrollView>
       );
    }

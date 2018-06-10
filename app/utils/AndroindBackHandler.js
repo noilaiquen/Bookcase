@@ -7,8 +7,8 @@ const handleAndroidBackButton = cb => {
    });
 };
 
-const removeAndroidBackButtonHandler = () => {
-   BackHandler.removeEventListener('hardwareBackPress', () => null);
+const removeHandlerAndroidBackButton = cb => {
+   BackHandler.removeEventListener('hardwareBackPress', () => cb());
 };
 
 const alertExit = () => {
@@ -25,6 +25,6 @@ const alertExit = () => {
 
 export { 
    handleAndroidBackButton,
-   removeAndroidBackButtonHandler,
+   removeHandlerAndroidBackButton,
    alertExit
 };

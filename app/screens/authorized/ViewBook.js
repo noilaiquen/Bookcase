@@ -9,12 +9,18 @@ import {
    Alert,
    DeviceEventEmitter
 } from 'react-native';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { Button, Icon, Rating } from 'react-native-elements';
 import { Header, BookOverview, Note } from '../../components';
-import { firebaseApp } from '../../config/firebaseConfig';
 import { appTextColor, darkColor, appFont, appColor } from '../../config/constants';
-import { DatePicker } from '../../utils';
 import global from '../../config/global';
+import { fetchBookById } from '../../actions/Book';
+import {
+   DatePicker, 
+   // handleAndroidBackButton,
+   // removeAndroidBackButtonHandler
+} from '../../utils';
 
 const HeaderScreen = ({ goBack, onRemove }) => (
    <Header
@@ -30,7 +36,7 @@ const HeaderScreen = ({ goBack, onRemove }) => (
    />
 );
 
-export default class ViewBook extends Component {
+class ViewBook extends Component {
    constructor(props) {
       super(props);
       this.state = {
@@ -39,73 +45,82 @@ export default class ViewBook extends Component {
          updateInfo: null,
          bookId: null
       };
-      this.onRemove = this.onRemove.bind(this);
-      this.onUpdate = this.onUpdate.bind(this);
-      this.ref = firebaseApp.database().ref('bookcase').child(global.user.uid);
+      // this.onRemove = this.onRemove.bind(this);
+      // this.onUpdate = this.onUpdate.bind(this);
+      // this.ref = firebaseApp.database().ref('bookcase').child(global.user.uid);
    }
 
-   componentDidMount = () => {
-      this.fetchBook();
+   componentWillMount = () => {
+      DeviceEventEmitter.addListener('refreshBookcase', () => this.props.fetchCollection());
    }
 
-   onRemove = () => {
-      Alert.alert('', 'Delete this book?',
-         [
-            { text: 'Cancel', onPress: () => null, style: 'cancel' },
-            {
-               text: 'Yes! Delete it.',
-               onPress: async () => {
-                  const { bookId } = this.state;
-                  const { navigation } = this.props;
-                  await this.ref.child(bookId).remove();
-                  DeviceEventEmitter.emit('refreshBookcase');
-                  navigation.goBack();
-               }
-            }
-         ],
-         { cancelable: false }
-      );
+   componentDidMount() {
+      const { bookId } = this.props.navigation.state.params;
+      this.props.fetchBook(bookId);
    }
 
-   onUpdate = async () => {
-      const { navigation } = this.props;
-      const { updateInfo, bookId } = this.state;
-
-      if (updateInfo !== null) {
-         global.setLoadingVisible(true);
-         await this.ref.child(bookId).update(updateInfo);
-         global.setLoadingVisible(false);
-         navigation.goBack();
-      } else {
-         navigation.goBack();
-      }
+   componentWillUnmount = () => {
+      DeviceEventEmitter.removeListener('refreshBookcase');
    }
 
-   fetchBook = async () => {
-      global.setLoadingVisible(true);
-      const { book_id } = this.props.navigation.state.params;
-      const snapshot = await this.ref.child(book_id).once('value');
+   // onRemove = () => {
+   //    Alert.alert('', 'Delete this book?',
+   //       [
+   //          { text: 'Cancel', onPress: () => null, style: 'cancel' },
+   //          {
+   //             text: 'Yes! Delete it.',
+   //             onPress: async () => {
+   //                const { bookId } = this.state;
+   //                const { navigation } = this.props;
+   //                await this.ref.child(bookId).remove();
+   //                DeviceEventEmitter.emit('refreshBookcase');
+   //                navigation.goBack();
+   //             }
+   //          }
+   //       ],
+   //       { cancelable: false }
+   //    );
+   // }
+
+   // onUpdate = async () => {
+   //    const { navigation } = this.props;
+   //    const { updateInfo, bookId } = this.state;
+
+   //    if (updateInfo !== null) {
+   //       global.setLoadingVisible(true);
+   //       await this.ref.child(bookId).update(updateInfo);
+   //       global.setLoadingVisible(false);
+   //       navigation.goBack();
+   //    } else {
+   //       navigation.goBack();
+   //    }
+   // }
+
+   // fetchBook = async () => {
+   //    global.setLoadingVisible(true);
+   //    const { book_id } = this.props.navigation.state.params;
+   //    const snapshot = await this.ref.child(book_id).once('value');
       
-      if (snapshot.val()) {
-         this.setState({
-            bookId: snapshot.key,
-            book: snapshot.val()
-         }, () => global.setLoadingVisible(false));
-      } else {
-         this.setState({
-            error: true
-         }, () => global.setLoadingVisible(false));
-      }
-   };
+   //    if (snapshot.val()) {
+   //       this.setState({
+   //          bookId: snapshot.key,
+   //          book: snapshot.val()
+   //       }, () => global.setLoadingVisible(false));
+   //    } else {
+   //       this.setState({
+   //          error: true
+   //       }, () => global.setLoadingVisible(false));
+   //    }
+   // };
    
    render() {
       const {
          content, inputGroup, label, inputGroupItem,
          formGroup, switchStyle, container, summary
       } = styles;
-      const { book, error, updateInfo, bookId } = this.state;
+      const { bookInfo } = this.props;
 
-      if (error) {
+      /* if (error) {
          return (
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                <Text>Error</Text>
@@ -115,32 +130,31 @@ export default class ViewBook extends Component {
                />   
             </View>   
          );
-      }
-
-      if (book === null) {
+      } */
+      if (bookInfo === null) {
          return null;
       }
 
       return (
          <ScrollView>
-            <HeaderScreen {...this.props} onRemove={this.onRemove} goBack={this.onUpdate} />
+            <HeaderScreen {...this.props} onRemove={this.onRemove} goBack={() => this.props.navigation.goBack()} />
             <View style={container}>
                <View style={content}>
-                  <BookOverview book={book} />
+                  <BookOverview book={bookInfo.book} />
 
                   <View style={formGroup}>
-                     <Text style={label}>{`Rate ${book.rating}`}</Text>   
+                     <Text style={label}>{`Rate ${bookInfo.book.rating}`}</Text>   
                      <Rating
                         type='heart'
                         fractions={1}
-                        startingValue={book.rating}
+                        startingValue={bookInfo.book.rating}
                         imageSize={30}
-                        onFinishRating={number =>
-                           this.setState({
-                              book: { ...book, rating: number },
-                              updateInfo: { ...updateInfo, rating: number }
-                           })
-                        }
+                        // onFinishRating={number =>
+                        //    this.setState({
+                        //       book: { ...book, rating: number },
+                        //       updateInfo: { ...updateInfo, rating: number }
+                        //    })
+                        // }
                      />
                   </View>
 
@@ -149,29 +163,25 @@ export default class ViewBook extends Component {
                         <View style={{ height: 50 }}>   
                            <Text style={label}>Finished Book</Text>
                            <Switch
-                              onValueChange={() =>
+                             /*  onValueChange={() =>
                                  this.setState({
                                     book: { ...book, is_finished: !book.is_finished },
                                     updateInfo: { ...updateInfo, is_finished: !book.is_finished }
                                  })
-                              }
-                              value={book.is_finished}
+                              } */
+                              value={bookInfo.book.is_finished}
                               style={switchStyle}
                               onTintColor={appTextColor}
-                              thumbTintColor={book.is_finished ? appTextColor : darkColor}
+                              thumbTintColor={bookInfo.book.is_finished ? appTextColor : darkColor}
                            />
                         </View>
-                        {book.is_finished ? (
+                        {bookInfo.book.is_finished ? (
                            <View>
                               <Text style={label}>Date Finished</Text>
                               <TouchableOpacity
                                  style={inputGroupItem}
                                  onPress={
-                                    () => DatePicker(
-                                       date => this.setState({
-                                          book: { ...book, date_finished: date },
-                                          updateInfo: { ...updateInfo, date_finished: date }
-                                    }))
+                                    () => DatePicker(date => null)
                                  }
                               >
                                  <Icon
@@ -180,7 +190,7 @@ export default class ViewBook extends Component {
                                     size={20}
                                     color={appTextColor}
                                  />
-                                 <Text style={summary}>{` ${book.date_finished}`}</Text>
+                                 <Text style={summary}>{` ${bookInfo.book.date_finished}`}</Text>
                               </TouchableOpacity>
                            </View>
                         ) : null}
@@ -188,16 +198,26 @@ export default class ViewBook extends Component {
                   </View>
                   <View style={formGroup}>
                      <Text style={label}>Summary</Text>
-                     <Text style={summary}>{book.summary}</Text>
+                     <Text style={summary}>{bookInfo.book.summary}</Text>
                   </View>
                </View>
                
-               <Note {...this.props} bookId={bookId} />
+               {/* <Note {...this.props} bookId={bookId} /> */}
             </View>
          </ScrollView>
       );
    }
 }
+
+const mapStatetoProps = ({ book }) => ({
+   bookInfo: book.bookInfo
+});
+
+const mapDispatchtoProps = dispatch => (
+   bindActionCreators({ fetchBook: fetchBookById }, dispatch)
+);
+
+export default connect(mapStatetoProps, mapDispatchtoProps)(ViewBook);
 
 const styles = StyleSheet.create({
    container: {

@@ -1,71 +1,72 @@
 import React, { Component } from 'react';
-import Root from './routes/Root';
+import { NavigationActions } from 'react-navigation';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import AppWithNavigationState from './routes/RootNavigator';
 import Container from './screens/Container';
-import Splash from './screens/Splash';
-import { firebaseApp } from './config/firebaseConfig';
-import { 
+import { AuthStatus } from './actions/Auth';
+import { watchConnection } from './actions/App';
+import {
    alertExit,
-   setUserToGlobalStore,
+   watchConnectionChange,
+   removeConnectionChangeListener,
    handleAndroidBackButton,
-   removeAndroidBackButtonHandler
+   removeHandlerAndroidBackButton
 } from './utils';
 
-console.ignoredYellowBox = [
-   'Setting a timer'
-];
-
-export default class App extends Component {
-   state = {
-      authenticated: false,
-      loading: true
-   };
-   
-   componentDidMount() {
+class App extends Component {
+   componentWillMount() {
+      watchConnectionChange(isConnected => this.props.watchConnection(isConnected));
       handleAndroidBackButton(alertExit);
-  
-      /**
-      * When the App component mounts, we listen for any authentication
-      * state changes in Firebase.
-      * Once subscribed, the 'user' parameter will either be null 
-      * (logged out) or an Object (logged in)
-      */
-      this.authSubscription = firebaseApp.auth().onAuthStateChanged(user => {
-         if (user) {
-            setUserToGlobalStore(user).then(() => {
-               this.setState({
-                  authenticated: true,
-                  loading: false
-               });
-            });
-         } else {
-            this.setState({
-               loading: false,
-               authenticated: false,
-            });
-         }
-      });
+   }
+
+   componentDidMount() {
+      this.props.AuthStatus();
    }
 
    componentWillUnmount() {
-      removeAndroidBackButtonHandler();
-
-      /**
-      * Don't forget to stop listening for authentication state changes
-      * when the component unmounts.
-      */
-      this.authSubscription();
+      removeConnectionChangeListener();
+      removeHandlerAndroidBackButton(alertExit);
    }
 
-   render() {
-      const Screen = Root(this.state.authenticated);
-      if (this.state.loading) {
-         return <Splash />;
-      }
+   // onBackPress = () => {
+      // const { dispatch, nav } = this.props;
+      // console.log('------------', this.findRouteNameFromNavigatorState(nav));
+      // if (nav.index === 1 || nav.index === 2) {
+      //    alertExit();
+      //    return true;
+      // }
+      // return false;
+      // dispatch(NavigationActions.back());
+      // return true;
+      // this.props.navigation.goBack();
+   // };
 
+   // findRouteNameFromNavigatorState({ routes }) {
+   //    let route = routes[routes.length - 1];
+   //    while (route.index !== undefined) route = route.routes[route.index];
+   //    // return route.routeName;
+   //    return route;
+   // }
+
+   render() {
       return (
          <Container>
-            <Screen />
+            <AppWithNavigationState />
          </Container>
       );
    }
 }
+
+const mapStateToProps = ({ auth, nav }) => ({
+   isLoading: auth.isLoading,
+   user: auth.user,
+   isLoggedIn: auth.isLoggedIn,
+   nav
+});
+
+const mapDispatchToProps = dispatch => (
+   bindActionCreators({ AuthStatus, watchConnection }, dispatch)
+);
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

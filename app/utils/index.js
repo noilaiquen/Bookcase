@@ -1,31 +1,42 @@
 import moment from 'moment';
-
+import { NetInfo } from 'react-native';
 import { 
    handleAndroidBackButton,
-   removeAndroidBackButtonHandler,
+   removeHandlerAndroidBackButton,
    alertExit
 } from './AndroindBackHandler';
 import DatePicker from './DatePicker';
 import Picker from './Picker';
-import global from '../config/global';
+import {
+   reduxMiddleware,
+   navigationPropConstructor
+} from './Redux';
 
 const timeAgo = (datetime, format = 'YYYY-MM-DD HH:mm:ss') => (
    moment(datetime, format).fromNow()
 );
 
-const setUserToGlobalStore = user => (
-   new Promise((resolve) => {
-      global.user = user;
-      resolve(user);
-   })
-);
+const watchConnectionChange = cb => {
+   NetInfo.addEventListener('connectionChange', connectionInfo => {
+      const isConnected = connectionInfo.type !== 'none' ? true : false;
+      cb(isConnected);
+   });
+};
+
+const removeConnectionChangeListener = () => {
+   NetInfo.removeEventListener('connectionChange');
+};
+
 
 export { 
    DatePicker,
    Picker,
    timeAgo,
-   setUserToGlobalStore,
    handleAndroidBackButton,
-   removeAndroidBackButtonHandler,
-   alertExit
+   removeHandlerAndroidBackButton,
+   alertExit,
+   reduxMiddleware,
+   navigationPropConstructor,
+   removeConnectionChangeListener,
+   watchConnectionChange
 };

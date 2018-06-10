@@ -3,28 +3,26 @@ import {
    View,
    StatusBar,
    Alert,
-   Text,
-   Keyboard
+   Keyboard,
+   BackHandler
 } from 'react-native';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { Button } from 'react-native-elements';
 import { GoogleSignin } from 'react-native-google-signin';
-import { AccessToken, LoginManager } from 'react-native-fbsdk';
 import { HeaderLeft, FormSignIn } from '../../components';
 import { appColor, appFont } from '../../config/constants';
 import googleSignInConfig from '../../config/googleSignConfig';
-import firebase, { firebaseApp } from '../../config/firebaseConfig';
+import { loginWithEmailPassword, loginWithGoogle, loginWithFacebook } from '../../actions/Auth';
 
 class SignIn extends Component {
    constructor(props) {
       super(props);
       this.state = {
          email: '',
-         password: '',
-         loading: false
+         password: ''
       };
 
-      this.googleSignIn = this.googleSignIn.bind(this);
-      this.facebookSignIn = this.facebookSignIn.bind(this);
       this.setEmail = this.setEmail.bind(this);
       this.setPassword = this.setPassword.bind(this);
       this.signInEmailPassword = this.signInEmailPassword.bind(this);
@@ -32,6 +30,19 @@ class SignIn extends Component {
 
    componentDidMount() {
       this.setupGoogleSignin();
+   }
+
+   componentWillReceiveProps(nextProps) {
+      if (nextProps.error !== null) {
+         Alert.alert(null, nextProps.error);
+      }
+   }
+
+   shouldComponentUpdate(nextProps) {
+      if (nextProps.isLoading !== this.props.isLoading) {
+         return true;
+      }
+      return false;
    }
 
    setupGoogleSignin = async () => {
@@ -42,83 +53,33 @@ class SignIn extends Component {
             offlineAccess: false
          });
       } catch (err) {
-         this.setState({ loading: false }, () => Alert.alert('', 'Google service error!'));
+         Alert.alert(null, 'Google service error!', [
+            { text: 'OK', onPress: () => BackHandler.exitApp() },
+         ]);
       }
    }
 
    setEmail = (email) => {
-      this.setState({
-         email
-      });
+      this.setState({ email });
    }
 
    setPassword = (password) => {
-      this.setState({
-         password
-      });
+      this.setState({ password });
    }
 
-   signInEmailPassword = async () => {
+   signInEmailPassword = () => {
       Keyboard.dismiss();
-      this.setState({ loading: true });
-
+      const { loginEmailPassword } = this.props;
       const { email, password } = this.state;
       if (email === '' && password === '') {
-         this.setState({ loading: false });
-         Alert.alert('', 'Password or email is empty!');
+         Alert.alert(null, 'Password or email is empty!');
          return;
       }
-
-      try {
-         await firebaseApp.auth().signInWithEmailAndPassword(email, password);
-      } catch (err) {
-         let message;
-         if (err.code === 'auth/invalid-email') {
-            message = 'The email invalid';
-         }
-         if (err.code === 'auth/user-not-found') {
-            message = 'Account not found..';
-         }
-         if (err.code === 'auth/wrong-password') {
-            message = 'The password invalid.';
-         }
-         
-         this.setState({ loading: false }, () => Alert.alert('', message));
-      }
-   }
-
-   googleSignIn = async () => {
-      try {
-         this.setState({
-            loading: true,
-            error: false
-         });
-         const user = await GoogleSignin.signIn();
-         const credential = firebase.auth.GoogleAuthProvider.credential(user.idToken, user.accessToken);
-         await firebaseApp.auth().signInWithCredential(credential);
-      } catch (err) {
-         // console.log(err);
-         this.setState({ loading: false }, () => Alert.alert('Wrong google sign in', JSON.stringify(err)));
-      }
-   }
-
-   facebookSignIn = async () => {
-      try {
-         const result = await LoginManager.logInWithReadPermissions(['public_profile', 'email']);
-         if (result.isCancelled) {
-            throw new Error('Please sign in before continue');
-         }
-         const tokenData = await AccessToken.getCurrentAccessToken();
-         const token = tokenData.accessToken.toString();
-         const credential = firebase.auth.FacebookAuthProvider.credential(token);
-         await firebaseApp.auth().signInWithCredential(credential);
-      } catch (err) {
-         // console.log(err);
-         this.setState({ loading: false }, () => Alert.alert('Wrong facebook sign in', JSON.stringify(err)));
-      }
+      loginEmailPassword(email, password);
    }
 
    render() {
+      const { isLoading, loginFacebook, loginGoogle } = this.props;
       return (
          <View style={styles.container}>
             <StatusBar barStyle="light-content" />   
@@ -130,7 +91,7 @@ class SignIn extends Component {
 
             <View style={styles.formContainer}>
                <FormSignIn
-                  loading={this.state.loading}
+                  loading={isLoading}
                   onSignIn={this.signInEmailPassword}
                   setEmail={this.setEmail}
                   setPassword={this.setPassword}
@@ -142,7 +103,7 @@ class SignIn extends Component {
                   icon={{ name: 'google', type: 'font-awesome', color: '#ea4335' }}
                   fontFamily={appFont}
                   buttonStyle={styles.buttonStyle}
-                  onPress={this.googleSignIn}
+                  onPress={() => loginGoogle()}
                />
                <Button
                   title="Sign in with facebook"
@@ -150,7 +111,7 @@ class SignIn extends Component {
                   icon={{ name: 'facebook', type: 'font-awesome' }}
                   fontFamily={appFont}
                   buttonStyle={styles.buttonStyle}
-                  onPress={this.facebookSignIn}
+                  onPress={() => loginFacebook()}
                />
             </View>
          </View>
@@ -158,7 +119,20 @@ class SignIn extends Component {
    }
 }
 
-export default SignIn;
+const mapStateToProps = ({ auth }) => ({
+   isLoading: auth.isLoading,
+   error: auth.error
+});
+
+const mapDispatchToProps = dispatch => (
+   bindActionCreators({
+      loginEmailPassword: loginWithEmailPassword,
+      loginGoogle: loginWithGoogle,
+      loginFacebook: loginWithFacebook
+   }, dispatch)
+);
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignIn);
 
 const styles = {
    container: {

@@ -1,5 +1,6 @@
 import React from 'react';
-import { StackNavigator, TabNavigator } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation';
+import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { Icon } from 'react-native-elements';
 
 import Bookcase from '../screens/authorized/Bookcase';
@@ -9,10 +10,10 @@ import Profile from '../screens/authorized/Profile';
 import ViewBook from '../screens/authorized/ViewBook';
 import ListNote from '../screens/authorized/ListNote';
 import Add from '../screens/authorized/Add';
-import { TabBarComponent, Header } from '../components';
+import { /* TabBarComponent, */ Header } from '../components';
 import { appTextColor, appFont } from '../config/constants';
 
-export const Tabs = TabNavigator({
+export const Tabs = createBottomTabNavigator({
    Bookcase: {
       screen: Bookcase,
       navigationOptions: {
@@ -26,7 +27,7 @@ export const Tabs = TabNavigator({
             />
       }
    },
-  /*  Explore: {
+   Explore: {
       screen: Explore,
       navigationOptions: {
          tabBarLabel: 'Explore',
@@ -38,33 +39,33 @@ export const Tabs = TabNavigator({
                color={tintColor}
             />
       },
-   }, */
-   Add: {
-      screen: Add,
-      navigationOptions: {
-         tabBarLabel: 'Add',
-         tabBarIcon: ({ tintColor }) =>
-            <Icon
-               name="ios-add-circle-outline"
-               type="ionicon"
-               size={28}
-               color={tintColor}
-            />
-      },
    },
-   /* Lists: {
-      screen: Lists,
-      navigationOptions: {
-         tabBarLabel: 'Lists',
-         tabBarIcon: ({ tintColor }) =>
-            <Icon
-               name="list"
-               type="entypo"
-               size={28}
-               color={tintColor}
-            />
-      },
-   }, */
+   // Add: {
+   //    screen: Add,
+   //    navigationOptions: {
+   //       tabBarLabel: 'Add',
+   //       tabBarIcon: ({ tintColor }) =>
+   //          <Icon
+   //             name="ios-add-circle-outline"
+   //             type="ionicon"
+   //             size={28}
+   //             color={tintColor}
+   //          />
+   //    },
+   // },
+   // Lists: {
+   //    screen: Lists,
+   //    navigationOptions: {
+   //       tabBarLabel: 'Lists',
+   //       tabBarIcon: ({ tintColor }) =>
+   //          <Icon
+   //             name="list"
+   //             type="entypo"
+   //             size={28}
+   //             color={tintColor}
+   //          />
+   //    },
+   // },
    Profile: {
       screen: Profile,
       navigationOptions: {
@@ -79,15 +80,16 @@ export const Tabs = TabNavigator({
       },
    }
 }, {
-   initialRouteName: 'Bookcase',
+   // initialRouteName: 'Bookcase',
    tabBarPosition: 'bottom',
-   tabBarComponent: TabBarComponent,
+   // tabBarComponent: TabBarComponent,
    swipeEnabled: false,
    animationEnabled: true,
    tabBarOptions: {
       showLabel: true,
       showIcon: true,
       upperCaseLabel: false,
+      // activeBackgroundColor: appTextColor,
       activeTintColor: appTextColor,
       inactiveTintColor: '#9E9E9E',
       labelStyle: {
@@ -103,16 +105,14 @@ export const Tabs = TabNavigator({
       style: {
          backgroundColor: '#FFF',
       },
-   },
-   navigationOptions: {
-      header: <Header centerComponent />
    }
 });
 
-const Authorized = StackNavigator({
+const Authorized = createStackNavigator({
    Tabs: {
       screen: Tabs,
       navigationOptions: {
+         header: <Header centerComponent />,
          gesturesEnabled: false
       }
    }, 

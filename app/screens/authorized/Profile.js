@@ -5,36 +5,15 @@ import {
    ActivityIndicator,
    Image
 } from 'react-native';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { Button } from 'react-native-elements';
-import { firebaseApp } from '../../config/firebaseConfig';
-import global from '../../config/global';
 import { appTextColor, appFont } from '../../config/constants';
+import { logout } from '../../actions/Auth';
 
-export default class Profile extends Component {
-   constructor(props) {
-      super(props);
-      this.state = {
-         user: null
-      };
-      this.signOut = this.signOut.bind(this);
-   }
-
-   componentDidMount() {
-      this.setState({
-         user: global.user
-      });
-   }
-
-   signOut = async () => {
-      try {
-         await firebaseApp.auth().signOut();
-      } catch (error) {
-         console.log('Sign out error: ', error);
-      } 
-   }
-   
+class Profile extends Component {
    render() {
-      const { user } = this.state;
+      const { user } = this.props;
       if (user === null) {
          return (
             <View style={styles.loadingContainer}>
@@ -61,13 +40,23 @@ export default class Profile extends Component {
                   fontFamily={appFont}
                   buttonStyle={styles.buttonSignOut}
                   backgroundColor={appTextColor}
-                  onPress={this.signOut}
+                  onPress={() => this.props.logout()}
                />
             </View>
          </View>
       );
    }
 }
+
+const mapStatetoProps = ({ auth }) => ({
+   user: auth.user
+});
+
+const mapDispatchToProps = dispatch => (
+   bindActionCreators({ logout }, dispatch)
+);
+
+export default connect(mapStatetoProps, mapDispatchToProps)(Profile);
 
 const styles = {
    container: {

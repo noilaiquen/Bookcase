@@ -3,45 +3,30 @@ import {
    View,
    StatusBar
 } from 'react-native';
+import { connect } from 'react-redux';
 import { Loading, LineConnectionFail } from '../components';
-import global from '../config/global';
 
 StatusBar.setBackgroundColor('transparent');
 StatusBar.setTranslucent(true);
 
-export default class Container extends Component {
-   constructor(props) {
-      super(props);
-      this.state = {
-         loadingIsVisible: false,
-         isConnection: true
-      };
-      global.setLoadingVisible = this.setLoadingVisible.bind(this);
-      global.setConnectionStatus = this.setConnectionStatus.bind(this);
-   }
-
-   setLoadingVisible = value => {
-      this.setState({
-         loadingIsVisible: value
-      });
-   }
-
-   setConnectionStatus = () => {
-      this.setState({
-         isConnection: !this.state.isConnection
-      });
-   }
-
+class Container extends Component {
    render() {
       return (
          <View style={styles.container}>
-            <Loading isVisible={this.state.loadingIsVisible} />
-            <LineConnectionFail show={this.state.isConnection} />
+            <Loading isVisible={this.props.isLoading} />
+            <LineConnectionFail show={this.props.isConnected} />
             {this.props.children} 
          </View>
       );
    }
 }
+
+const mapStateToProps = ({ app }) => ({
+   isLoading: app.isLoading,
+   isConnected: app.isConnected
+});
+
+export default connect(mapStateToProps)(Container);
 
 const styles = {
    container: {
