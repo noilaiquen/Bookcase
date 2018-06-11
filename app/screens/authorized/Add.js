@@ -1,15 +1,12 @@
 import React, { Component } from 'react';
 import {
-   StyleSheet,
    ScrollView,
    View,
    Image,
    Switch,
    TouchableOpacity,
    Text,
-   TextInput,
-   ToastAndroid,
-   DeviceEventEmitter
+   TextInput
 } from 'react-native';
 import {
    FormLabel,
@@ -18,203 +15,92 @@ import {
    Icon,
    SearchBar
 } from 'react-native-elements';
-import moment from 'moment';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
 import { SearchList } from '../../components';
-import {
-   Picker,
-   DatePicker
-} from '../../utils';
+import { Picker, DatePicker } from '../../utils';
 import noCover from '../../assets/no_cover.jpg';
-import Upload from '../../api/Upload';
-import global from '../../config/global';
-import { firebaseApp } from '../../config/firebaseConfig';
+import { appTextColor, darkColor, appFont } from '../../config/constants';
 import {
-   appTextColor,
-   darkColor,
-   appFont
-} from '../../config/constants';
+   googleBookSearch,
+   setBookInfo,
+   onSelectSearchResult,
+   onRemoveImage,
+   onUpload
+} from '../../actions/Add';
 
-const currentDate = moment().format('YYYY-MM-DD');
-const defaultThumbnail = 'https://firebasestorage.googleapis.com/v0/b/bookcase-d1e17.appspot.com/o/thumbnail%2FNo_book_cover_lg.jpg?alt=media&token=18f98f4f-1cfa-4610-b6db-bd7478849a20';
 
-const initState = {
-   title: '',
-   author: '',
-   page: 0,
-   summary: '',
-   isFinished: false,
-   dateFinished: currentDate,
-   imageSource: null,
-   thumbnail: null,
-   isSearch: false,
-   searchText: '',
-   searchResults: []
-};
-
-export default class Add extends Component {
+class Add extends Component {
    constructor(props) {
       super(props);
-      this.state = initState;
-      this.ref = firebaseApp.database().ref('bookcase').child(global.user.uid);
-
-      this.onUpload = this.onUpload.bind(this);
       this.chooseImage = this.chooseImage.bind(this);
-      this.onRemoveImage = this.onRemoveImage.bind(this);
-      this.onSelectSearchResult = this.onSelectSearchResult.bind(this);
    }
-
-   onUpload = async () => {
-      const {
-         title, author, isFinished,
-         dateFinished, page, imageSource,
-         summary, thumbnail
-      } = this.state;
-      
-      global.setLoadingVisible(true);
-
-      if (title === '' || author === '') {
-         global.setLoadingVisible(false);
-         ToastAndroid.show('Title and Author is required!', ToastAndroid.SHORT);
-         return;
-      }
-
-      let thumbnailLink = null;
-      if (imageSource !== null) {
-         try {
-            thumbnailLink = await Upload(imageSource.uri);
-         } catch (error) {
-            console.log('upload image failed!');
-         }
-      }
-
-      if (thumbnail !== null) {
-         thumbnailLink = thumbnail;
-      }
-
-      const dataPost = {
-         title,
-         author,
-         summary,
-         rating: 0,
-         is_finished: isFinished,
-         date_finished: isFinished ? dateFinished : null,
-         page: Number(page),
-         thumbnail: thumbnailLink !== null ? thumbnailLink : defaultThumbnail
-      };
-
-      try {
-         await this.ref.push(dataPost);
-         this.setState(initState, () => {
-            global.setLoadingVisible(false);
-            ToastAndroid.show('Add successfully!', ToastAndroid.SHORT);
-            DeviceEventEmitter.emit('refreshBookcase');
-         });
-      } catch (error) {
-         global.setLoadingVisible(false);
-         ToastAndroid.show('Somethings were wrong!', ToastAndroid.SHORT);
-      }
-   }
-
-   onRemoveImage = () => {
-      this.setState({ imageSource: null });
-   }
-
-   onSelectSearchResult = result => {
-      const { title, authors, description, pageCount, imageLinks } = result;
-      this.setState({
-         title,
-         author: authors !== undefined ? authors[0] : 'Undefined',
-         page: pageCount !== undefined ? Number(pageCount) : 0,
-         summary: description,
-         isFinished: false,
-         dateFinished: currentDate,
-         thumbnail: imageLinks.thumbnail !== undefined ? imageLinks.thumbnail : defaultThumbnail,
-         isSearch: false,
-         searchText: '',
-         searchResults: []
-      });
-   }
-
-   searchGoogleBook = searchText => {
-      this.setState({ searchText }, () => {
-         if (searchText !== '') {
-            this.setState({ isSearch: true });
-            fetch(`https://www.googleapis.com/books/v1/volumes?q=${searchText}&maxResults=5`)
-               .then(response => response.json())
-               .then(responseJson => this.setState({ searchResults: responseJson.items }))
-               .catch(error => console.log(error));
-         } else {
-            this.setState({ isSearch: false });
-         }
-      });
-   }
-
+   
    chooseImage = () => {
-      Picker((source, dataBase64) => this.setState({
-         imageSource: source,
-         dataBase64
-      }));
+      const { actions } = this.props;
+      Picker((source, dataBase64) => {
+         actions.setBookInfo({
+            imageSource: source,
+            dataBase64
+         });
+      });
    }
 
-   render = () => {
-      const { 
-         container, labelStyle, inputStyle, 
-         buttonStyle, image, scrollview, 
-         switchStyle, removeImage,
-         textRemoveImage, inputGroup, inputGroupItem,
-         textarea, textareaContainer, searchContainer, searchInput
-      } = styles;
+   render() {
+      const { actions, add } = this.props;
       const { 
          imageSource, title, author,
          isFinished, dateFinished, page,
-         summary, isSearch, searchResults,
-         searchText, thumbnail
-      } = this.state;
+         summary, thumbnail, googleSearch,
+         isGoogleSearch
+      } = add;
 
       const thumb = thumbnail !== null ? { uri: thumbnail } : imageSource;
+
       return (
-         <View style={container}>
-            <ScrollView contentContainerStyle={scrollview}>
+         <View style={styles.container}>
+            <ScrollView contentContainerStyle={styles.scrollview}>
                <SearchBar
                   lightTheme
-                  value={searchText}
-                  onChangeText={text => this.searchGoogleBook(text)}
-                  onClear={() => this.setState({ searchText: '', searchResults: [] })}
-                  clearIcon={{ type: 'font-awesome', name: 'cancel' }}
+                  onChangeText={text => actions.googleBookSearch(text)}
                   placeholder='Search google book'
-                  containerStyle={searchContainer}
-                  inputStyle={searchInput}
+                  containerStyle={styles.searchContainer}
+                  inputStyle={styles.searchInput}
                />
 
-               {isSearch && (
+                {isGoogleSearch && (
                   <SearchList
-                     onSelect={this.onSelectSearchResult}   
-                     data={searchResults}
+                     onSelect={actions.onSelectSearchResult}   
+                     data={googleSearch}
                   />
-               )}
+               )} 
 
                <View style={{ height: 15 }} />
 
                <TouchableOpacity onPress={this.chooseImage}>
                   <Image 
-                     style={image}
+                     style={styles.image}
                      source={thumb !== null ? thumb : noCover} 
                   />
                </TouchableOpacity>
 
                {imageSource !== null && (
-                  <TouchableOpacity style={removeImage} onPress={this.onRemoveImage}>
-                     <Text style={textRemoveImage}>REMOVE</Text>
+                  <TouchableOpacity
+                     style={styles.removeImage}
+                     onPress={actions.onRemoveImage}
+                  >
+                     <Text style={styles.textRemoveImage}>REMOVE</Text>
                   </TouchableOpacity>
                )}
 
                <View>
-                  <FormLabel labelStyle={labelStyle}>Title</FormLabel>
+                  <FormLabel labelStyle={styles.labelStyle}>Title</FormLabel>
                   <FormInput
                      ref={(input) => this.titleInput = input}  //eslint-disable-line   
-                     inputStyle={inputStyle}
+                     inputStyle={styles.inputStyle}
                      value={title}
-                     onChangeText={text => this.setState({ title: text })}
+                     onChangeText={text => actions.setBookInfo({ title: text })}
                      placeholder="Enter book title..."
                      placeholderTextColor="#BDBDBD"
                      returnKeyType="next"
@@ -223,12 +109,12 @@ export default class Add extends Component {
                </View>
 
                <View>
-                  <FormLabel labelStyle={labelStyle}>Author</FormLabel>
+                  <FormLabel labelStyle={styles.labelStyle}>Author</FormLabel>
                   <FormInput
                      ref={(input) => this.authorInput = input}  //eslint-disable-line  
-                     inputStyle={inputStyle}
+                     inputStyle={styles.inputStyle}
                      value={author}
-                     onChangeText={text => this.setState({ author: text })}
+                     onChangeText={text => actions.setBookInfo({ author: text })}
                      placeholder="Enter book author..."
                      placeholderTextColor="#BDBDBD"
                      returnKeyType="next"
@@ -237,13 +123,13 @@ export default class Add extends Component {
                </View>
 
                <View>
-                  <FormLabel labelStyle={labelStyle}>Page</FormLabel>
+                  <FormLabel labelStyle={styles.labelStyle}>Page</FormLabel>
                   <FormInput
                      ref={(input) => this.pageInput = input}  //eslint-disable-line   
-                     inputStyle={inputStyle}
+                     inputStyle={styles.inputStyle}
                      value={page.toString()}
                      keyboardType="numeric"
-                     onChangeText={text => this.setState({ page: text })}
+                     onChangeText={text => actions.setBookInfo({ page: text })}
                      placeholder="Enter total page..."
                      placeholderTextColor="#BDBDBD"
                      returnKeyType="next"
@@ -252,42 +138,38 @@ export default class Add extends Component {
                </View>
 
                <View>
-                  <FormLabel labelStyle={labelStyle}>Summary</FormLabel>
-                  <View style={textareaContainer}>
+                  <FormLabel labelStyle={styles.labelStyle}>Summary</FormLabel>
+                  <View style={styles.textareaContainer}>
                      <TextInput
                         multiline
                         numberOfLines={4}
                         value={summary}
                         placeholder="Enter summary..."
                         placeholderTextColor="#BDBDBD"
-                        style={textarea}
+                        style={styles.textarea}
                         ref={(input) => this.summaryInput = input}  //eslint-disable-line  
-                        onChangeText={(text) => this.setState({ summary: text })}
+                        onChangeText={text => actions.setBookInfo({ summary: text })}
                      />
                   </View>
                </View>
 
-               <View style={inputGroup}>
+               <View style={styles.inputGroup}>
                   <View>
-                     <FormLabel labelStyle={labelStyle}>Finished Book</FormLabel>
+                     <FormLabel labelStyle={styles.labelStyle}>Finished Book</FormLabel>
                      <Switch
-                        onValueChange={() =>
-                           this.setState({ isFinished: !this.state.isFinished })
-                        }
-                        value={this.state.isFinished}
-                        style={switchStyle}
+                        onValueChange={() => actions.setBookInfo({ isFinished: !isFinished })}
+                        value={isFinished}
+                        style={styles.switchStyle}
                         onTintColor={appTextColor}
-                        thumbTintColor={this.state.isFinished ? appTextColor : '#eee'}
+                        thumbTintColor={isFinished ? appTextColor : '#eee'}
                      />
                   </View>
                   {isFinished ? (
                      <View>
-                        <FormLabel labelStyle={labelStyle}>Date Finished</FormLabel>
+                        <FormLabel labelStyle={styles.labelStyle}>Date Finished</FormLabel>
                         <TouchableOpacity
-                           style={inputGroupItem}
-                           onPress={
-                              () => DatePicker(date => this.setState({ dateFinished: date }))
-                           }
+                           style={styles.inputGroupItem}
+                           onPress={() => DatePicker(date => actions.setBookInfo({ dateFinished: date }))}
                         >
                            <Icon
                               name="md-calendar"
@@ -304,10 +186,9 @@ export default class Add extends Component {
                <View>
                   <Button
                      title="Add book"
-                     // onPress={this.onUpload}
-                     onPress={() => global.setConnectionStatus()}
+                     onPress={actions.onUpload}
                      containerViewStyle={{ marginTop: 50 }}
-                     buttonStyle={buttonStyle}
+                     buttonStyle={styles.buttonStyle}
                      backgroundColor={appTextColor}
                      fontFamily={appFont}
                   />
@@ -318,7 +199,27 @@ export default class Add extends Component {
    }
 }
 
-const styles = StyleSheet.create({
+const mapDispatchToProps = dispatch => ({
+   actions: bindActionCreators({
+      googleBookSearch,
+      setBookInfo,
+      onSelectSearchResult,
+      onRemoveImage,
+      onUpload
+   }, dispatch)
+});
+
+const mapStateToProps = ({ auth, add }) => {
+   const { user } = auth;
+   return {
+      uid: user.uid,
+      add
+   };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Add);
+
+const styles = {
    container: {
       flex: 1,
       backgroundColor: '#FFF'
@@ -393,5 +294,5 @@ const styles = StyleSheet.create({
       backgroundColor: '#FFF',
       fontFamily: appFont
    }
-});
+};
 

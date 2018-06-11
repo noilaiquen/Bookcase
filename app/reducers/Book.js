@@ -4,7 +4,7 @@ import {
    FETCH_FAILURE,
    SEARCH_BOOK,
    CLEAR_SEARCH,
-   FETCH_BOOK_ID
+   FETCH_BOOK_ID,
 } from '../actions/Book';
 
 const initState = {

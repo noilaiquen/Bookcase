@@ -90,4 +90,3 @@ export const fetchBookById = bookId => (
       dispatch({ type: 'HIDE_LOADING' });
    }
 );
-

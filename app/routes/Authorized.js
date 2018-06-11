@@ -40,19 +40,19 @@ export const Tabs = createBottomTabNavigator({
             />
       },
    },
-   // Add: {
-   //    screen: Add,
-   //    navigationOptions: {
-   //       tabBarLabel: 'Add',
-   //       tabBarIcon: ({ tintColor }) =>
-   //          <Icon
-   //             name="ios-add-circle-outline"
-   //             type="ionicon"
-   //             size={28}
-   //             color={tintColor}
-   //          />
-   //    },
-   // },
+   Add: {
+      screen: Add,
+      navigationOptions: {
+         tabBarLabel: 'Add',
+         tabBarIcon: ({ tintColor }) =>
+            <Icon
+               name="ios-add-circle-outline"
+               type="ionicon"
+               size={28}
+               color={tintColor}
+            />
+      },
+   },
    // Lists: {
    //    screen: Lists,
    //    navigationOptions: {
@@ -89,7 +89,7 @@ export const Tabs = createBottomTabNavigator({
       showLabel: true,
       showIcon: true,
       upperCaseLabel: false,
-      // activeBackgroundColor: appTextColor,
+      // activeBackgroundColor: '#EEE',
       activeTintColor: appTextColor,
       inactiveTintColor: '#9E9E9E',
       labelStyle: {
