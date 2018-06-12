@@ -30,13 +30,12 @@ import {
    onUpload
 } from '../../actions/Add';
 
-
 class Add extends Component {
    constructor(props) {
       super(props);
       this.chooseImage = this.chooseImage.bind(this);
    }
-   
+
    chooseImage = () => {
       const { actions } = this.props;
       Picker((source, dataBase64) => {
@@ -164,7 +163,8 @@ class Add extends Component {
                         thumbTintColor={isFinished ? appTextColor : '#eee'}
                      />
                   </View>
-                  {isFinished ? (
+                  
+                  {isFinished && (
                      <View>
                         <FormLabel labelStyle={styles.labelStyle}>Date Finished</FormLabel>
                         <TouchableOpacity
@@ -180,7 +180,7 @@ class Add extends Component {
                            <Text style={{ fontFamily: appFont }}>{` ${dateFinished}`}</Text>
                         </TouchableOpacity>
                      </View>
-                  ) : null }
+                  )}
                </View>
                
                <View>

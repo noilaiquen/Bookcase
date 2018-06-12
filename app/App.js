@@ -5,28 +5,39 @@ import { bindActionCreators } from 'redux';
 import AppWithNavigationState from './routes/RootNavigator';
 import Container from './screens/Container';
 import { AuthStatus } from './actions/Auth';
-import { watchConnection } from './actions/App';
+import { watchConnection, keyboardShow, keyboardHide } from './actions/App';
 import {
    alertExit,
    watchConnectionChange,
    removeConnectionChangeListener,
    handleAndroidBackButton,
-   removeHandlerAndroidBackButton
+   removeHandlerAndroidBackButton,
+   keyboardDidShowListener,
+   keyboardDidHideListener,
+   removeKeyboardDidShowListener,
+   removeKeyboardDidHideListener
 } from './utils';
 
 class App extends Component {
    componentWillMount() {
-      watchConnectionChange(isConnected => this.props.watchConnection(isConnected));
+      const { actions } = this.props;
+
+      watchConnectionChange(isConnected => actions.watchConnection(isConnected));
       handleAndroidBackButton(alertExit);
+      keyboardDidShowListener(actions.keyboardShow);
+      keyboardDidHideListener(actions.keyboardHide);
    }
 
    componentDidMount() {
-      this.props.AuthStatus();
+      const { actions } = this.props;
+      actions.AuthStatus();
    }
 
    componentWillUnmount() {
       removeConnectionChangeListener();
       removeHandlerAndroidBackButton(alertExit);
+      removeKeyboardDidShowListener();
+      removeKeyboardDidHideListener();
    }
 
    // onBackPress = () => {
@@ -65,8 +76,13 @@ const mapStateToProps = ({ auth, nav }) => ({
    nav
 });
 
-const mapDispatchToProps = dispatch => (
-   bindActionCreators({ AuthStatus, watchConnection }, dispatch)
-);
+const mapDispatchToProps = dispatch => ({
+   actions: bindActionCreators({ 
+      AuthStatus,
+      watchConnection,
+      keyboardShow,
+      keyboardHide
+   }, dispatch)
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

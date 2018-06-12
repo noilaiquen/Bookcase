@@ -1,48 +1,15 @@
-import React from 'react';
-import { Keyboard } from 'react-native';
-import { TabBarBottom } from 'react-navigation';
+import React, { Component } from 'react';
+import { BottomTabBar } from 'react-navigation-tabs';
+import { connect } from 'react-redux';
 
-class TabBarComponent extends React.PureComponent {
-
-   constructor(props) {
-      super(props);
-
-      this.keyboardWillShow = this.keyboardWillShow.bind(this);
-      this.keyboardWillHide = this.keyboardWillHide.bind(this);
-
-      this.state = {
-         isVisible: true
-      };
-   }
-
-   componentWillMount() {
-      this.keyboardWillShowSub = Keyboard.addListener('keyboardDidShow', this.keyboardWillShow);
-      this.keyboardWillHideSub = Keyboard.addListener('keyboardDidHide', this.keyboardWillHide);
-   }
-
-   componentWillUnmount() {
-      this.keyboardWillShowSub.remove();
-      this.keyboardWillHideSub.remove();
-   }
-
-   keyboardWillShow = event => {  //eslint-disable-line  
-      this.setState({
-         isVisible: false
-      });
-   }
-
-   keyboardWillHide = event => {  //eslint-disable-line  
-      this.setState({
-         isVisible: true
-      });
-   }
-
+class TabBarComponent extends Component {
    render() {
-      return (this.state.isVisible ?
-         <TabBarBottom {...this.props} />
-         :
-         null);
+      return !this.props.isKeyboardShow ? <BottomTabBar {...this.props} /> : null;
    }
 }
 
-export default TabBarComponent;
+const mapStateToProps = ({ app }) => ({
+   isKeyboardShow: app.isKeyboardShow
+});
+
+export default connect(mapStateToProps)(TabBarComponent);

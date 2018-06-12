@@ -1,4 +1,4 @@
-import { NavigationActions } from 'react-navigation';
+import { NavigationActions, StackActions } from 'react-navigation';
 import { GoogleSignin } from 'react-native-google-signin';
 import { AccessToken, LoginManager } from 'react-native-fbsdk';
 import firebase, { firebaseApp } from '../config/firebaseConfig';
@@ -33,7 +33,12 @@ const navigateAction = user => (
    NavigationActions.navigate({
       routeName: user !== null ? 'Authorized' : 'Unauthorized',
       params: {},
-      action: NavigationActions.navigate({ routeName: user !== null ? 'Tabs' : 'Main' }),
+      action: StackActions.reset({
+         index: 0,
+         actions: [
+            NavigationActions.navigate({ routeName: user !== null ? 'Tabs' : 'Main' })
+         ]
+      }),
    })
 );
 
@@ -110,6 +115,15 @@ export const logout = () => (
    async dispatch => {
       await firebaseApp.auth().signOut();
       dispatch({ type: LOGOUT });
-      dispatch(navigateAction(null));
+      const navigatonAction = NavigationActions.navigate({
+         routeName: 'Unauthorized',
+         action: StackActions.reset({
+            index: 0,
+            actions: [
+               NavigationActions.navigate({ routeName: 'Main' })
+            ]
+         })
+      });
+      dispatch(navigatonAction);
    }
 );

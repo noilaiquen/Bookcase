@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { NetInfo } from 'react-native';
+import { NetInfo, Keyboard } from 'react-native';
 import { 
    handleAndroidBackButton,
    removeHandlerAndroidBackButton,
@@ -27,6 +27,21 @@ const removeConnectionChangeListener = () => {
    NetInfo.removeEventListener('connectionChange');
 };
 
+const keyboardDidShowListener = cb => {
+   Keyboard.addListener('keyboardDidShow', cb);
+};
+
+const keyboardDidHideListener = cb => {
+   Keyboard.addListener('keyboardDidHide', cb);
+};
+
+const removeKeyboardDidShowListener = () => {
+   Keyboard.removeListener('keyboardDidShow');
+};
+
+const removeKeyboardDidHideListener = () => {
+   Keyboard.removeListener('keyboardDidHide');
+};
 
 export { 
    DatePicker,
@@ -38,5 +53,9 @@ export {
    reduxMiddleware,
    navigationPropConstructor,
    removeConnectionChangeListener,
-   watchConnectionChange
+   watchConnectionChange,
+   keyboardDidShowListener,
+   keyboardDidHideListener,
+   removeKeyboardDidShowListener,
+   removeKeyboardDidHideListener
 };

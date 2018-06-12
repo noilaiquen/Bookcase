@@ -10,7 +10,7 @@ import Profile from '../screens/authorized/Profile';
 import ViewBook from '../screens/authorized/ViewBook';
 import ListNote from '../screens/authorized/ListNote';
 import Add from '../screens/authorized/Add';
-import { /* TabBarComponent, */ Header } from '../components';
+import { TabBarComponent, Header } from '../components';
 import { appTextColor, appFont } from '../config/constants';
 
 export const Tabs = createBottomTabNavigator({
@@ -82,7 +82,7 @@ export const Tabs = createBottomTabNavigator({
 }, {
    // initialRouteName: 'Bookcase',
    tabBarPosition: 'bottom',
-   // tabBarComponent: TabBarComponent,
+   tabBarComponent: TabBarComponent,
    swipeEnabled: false,
    animationEnabled: true,
    tabBarOptions: {
