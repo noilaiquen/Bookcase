@@ -1,29 +1,31 @@
+import { NetInfo, Keyboard, BackHandler, Alert } from 'react-native';
 import moment from 'moment';
-import { NetInfo, Keyboard } from 'react-native';
-import { 
-   handleAndroidBackButton,
-   removeHandlerAndroidBackButton,
-   alertExit
-} from './AndroindBackHandler';
 import DatePicker from './DatePicker';
 import Picker from './Picker';
-import {
-   reduxMiddleware,
-   navigationPropConstructor
-} from './Redux';
+import { reduxMiddleware,  navigationPropConstructor } from './Redux';
 
 const timeAgo = (datetime, format = 'YYYY-MM-DD HH:mm:ss') => (
    moment(datetime, format).fromNow()
 );
 
-const watchConnectionChange = cb => {
+const alertExit = () => {
+   Alert.alert(null, 'Exit app?',
+      [
+         { text: 'OK', onPress: () => BackHandler.exitApp() },
+         { text: 'Cancel', onPress: () => null, style: 'cancel' },
+      ],
+      { cancelable: false }
+   );
+};
+
+const connectionListener = cb => {
    NetInfo.addEventListener('connectionChange', connectionInfo => {
       const isConnected = connectionInfo.type !== 'none' ? true : false;
       cb(isConnected);
    });
 };
 
-const removeConnectionChangeListener = () => {
+const removeConnectionListener = () => {
    NetInfo.removeEventListener('connectionChange');
 };
 
@@ -43,19 +45,30 @@ const removeKeyboardDidHideListener = () => {
    Keyboard.removeListener('keyboardDidHide');
 };
 
+const androidBackButtonListener = cb => {
+   BackHandler.addEventListener('hardwareBackPress', () => {
+      cb();
+      return true; //không cho hàm mặt định đóng app
+   });
+};
+
+const removeAndroidBackButtonListener = cb => {
+   BackHandler.removeEventListener('hardwareBackPress', cb);
+};
+
 export { 
    DatePicker,
    Picker,
    timeAgo,
-   handleAndroidBackButton,
-   removeHandlerAndroidBackButton,
    alertExit,
    reduxMiddleware,
    navigationPropConstructor,
-   removeConnectionChangeListener,
-   watchConnectionChange,
+   androidBackButtonListener,
+   removeAndroidBackButtonListener,
+   connectionListener,
+   removeConnectionListener,
    keyboardDidShowListener,
-   keyboardDidHideListener,
    removeKeyboardDidShowListener,
+   keyboardDidHideListener,
    removeKeyboardDidHideListener
 };
