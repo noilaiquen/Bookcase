@@ -1,3 +1,4 @@
+import { DeviceEventEmitter } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import { firebaseApp } from '../config/firebaseConfig';
 
@@ -7,6 +8,8 @@ export const FETCH_FAILURE = 'FETCH_FAILURE';
 export const SEARCH_BOOK = 'SEARCH_BOOK';
 export const CLEAR_SEARCH = 'CLEAR_SEARCH';
 export const FETCH_BOOK_ID = 'FETCH_BOOK_ID';
+export const CHANGE_BOOK_INFO = 'CHANGE_BOOK_INFO';
+export const RESET_UPDATE_STATE = 'RESET_UPDATE_STATE';
 
 export const fetchBook = () => ({
    type: FETCH_BOOK
@@ -34,6 +37,14 @@ export const clearSearch = () => ({
 export const fetchBookId = bookInfo => ({
    type: FETCH_BOOK_ID,
    bookInfo
+});
+
+export const changeBookInfo = value => ({
+   type: CHANGE_BOOK_INFO,
+   value
+});
+export const resetUpdateState = () => ({
+   type: RESET_UPDATE_STATE
 });
 
 export const retrieveCollection = () => (
@@ -80,13 +91,38 @@ export const fetchBookById = bookId => (
       dispatch({ type: 'SHOW_LOADING' });
       const snapshot = await firebaseApp.database().ref('bookcase').child(uid).child(bookId).once('value');
       if (snapshot.val()) {
-         dispatch(fetchBookId({
-            bookId: snapshot.key,
-            book: snapshot.val()
-         }));
+         let book = snapshot.val();
+         book.bookId = snapshot.key;
+         dispatch(fetchBookId(book));
       } else {
          dispatch(NavigationActions.back());
       }
       dispatch({ type: 'HIDE_LOADING' });
+   }
+);
+
+export const updateBookInfo = () => (
+   async (dispatch, getState) => {
+      const { isUpdated, bookInfo } = getState().book;
+      const { uid } = getState().auth.user;
+      const { bookId } = bookInfo;
+
+      if (isUpdated) {
+         dispatch({ type: 'SHOW_LOADING' });
+         delete bookInfo.bookId; //remove book ID
+         await firebaseApp.database().ref('bookcase').child(uid).child(bookId).update(bookInfo);
+         dispatch(resetUpdateState());
+         dispatch({ type: 'HIDE_LOADING' });
+      }
+      dispatch(NavigationActions.back());
+   }
+);
+
+export const deleteBook = bookId => (
+   async (dispatch, getState) => {
+      const { uid } = getState().auth.user;
+      await firebaseApp.database().ref('bookcase').child(uid).child(bookId).remove();
+      DeviceEventEmitter.emit('refreshBookcase');
+      dispatch(NavigationActions.back());
    }
 );

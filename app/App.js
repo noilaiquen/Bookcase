@@ -12,7 +12,7 @@ class App extends Component {
    componentWillMount() {
       const { actions } = this.props;
       utils.connectionListener(isConnected => actions.watchConnection(isConnected));
-      utils.androidBackButtonListener(alertExit);
+      utils.androidBackButtonListener(utils.alertExit);
       utils.keyboardDidShowListener(actions.keyboardShow);
       utils.keyboardDidHideListener(actions.keyboardHide);
    }
@@ -23,7 +23,7 @@ class App extends Component {
 
    componentWillUnmount() {
       utils.removeConnectionListener();
-      utils.removeAndroidBackButtonListener(alertExit);
+      utils.removeAndroidBackButtonListener(utils.alertExit);
       utils.removeKeyboardDidShowListener();
       utils.removeKeyboardDidHideListener();
    }

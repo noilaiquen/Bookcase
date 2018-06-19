@@ -5,6 +5,8 @@ import {
    SEARCH_BOOK,
    CLEAR_SEARCH,
    FETCH_BOOK_ID,
+   CHANGE_BOOK_INFO,
+   RESET_UPDATE_STATE
 } from '../actions/Book';
 
 const initState = {
@@ -12,6 +14,7 @@ const initState = {
    isSearching: false,
    booksSearch: [],
    books: [],
+   isUpdated: false,
    bookInfo: null,
    error: null
 };
@@ -60,6 +63,19 @@ export default (state = initState, action) => {
             bookInfo
          };      
       }
+      case CHANGE_BOOK_INFO: {
+         const { value } = action;
+         return {
+            ...state,
+            isUpdated: true,
+            bookInfo: { ...state.bookInfo, ...value }
+         };
+      }
+      case RESET_UPDATE_STATE:
+         return {
+            ...state,
+            isUpdated: false,
+         };
       default:
          return state;
    }

@@ -7,8 +7,7 @@ import {
 import { SearchBar } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { 
-   // HeaderBookcase,
+import {
    BookcaseListItem,
    BookcaseEmpty
 } from '../../components';
@@ -18,24 +17,16 @@ import {
    clearSearch,
    searchBook
 } from '../../actions/Book';
-// import imageHeader from '../../assets/header4.jpg';
 
 class Bookcase extends Component {
-   // static navigationOptions = props => ({
-   //    header: <HeaderBookcase
-   //       title="bookcase"   
-   //       search
-   //       imageBackground={imageHeader}
-   //       {...props}
-   //    />
-   // });
-
    componentWillMount = () => {
-      DeviceEventEmitter.addListener('refreshBookcase', () => this.props.fetchCollection());
+      const { actions } = this.props;
+      DeviceEventEmitter.addListener('refreshBookcase', () => actions.retrieveCollection());
    }
 
    componentDidMount = () => {
-      this.props.fetchCollection();
+      const { actions } = this.props;
+      actions.retrieveCollection();
    }
 
    componentWillUnmount = () => {
@@ -44,8 +35,8 @@ class Bookcase extends Component {
 
    render() {
       const { 
-         books, isLoading, fetchCollection, 
-         booksSearch, isSearching, dispatch, onSearch
+         books, isLoading, actions,
+         booksSearch, isSearching, dispatch
       } = this.props;
 
       return (
@@ -56,7 +47,7 @@ class Bookcase extends Component {
                <FlatList
                   ListHeaderComponent={
                      <SearchBar
-                        onChangeText={text => onSearch(text)}
+                        onChangeText={text => actions.searchBook(text)}
                         placeholder='Type Here...'
                         onClear={() => dispatch(clearSearch)}
                         clearIcon={{ type: 'font-awesome', name: 'cancel' }}
@@ -70,7 +61,7 @@ class Bookcase extends Component {
                      <BookcaseListItem book={item} {...this.props} />
                   )}
                   refreshing={isLoading}
-                  onRefresh={() => fetchCollection()}
+                  onRefresh={() => actions.retrieveCollection()}
                   keyboardShouldPersistTaps="always"
                   keyboardDismissMode="on-drag"
                />
@@ -87,12 +78,12 @@ const mapStateToProps = ({ book }) => ({
    isSearching: book.isSearching,
 });
 
-const mapDispatchToProps = dispatch => (
-   bindActionCreators({ 
-      fetchCollection: retrieveCollection,
-      onSearch: searchBook
+const mapDispatchToProps = dispatch => ({
+   actions: bindActionCreators({
+      retrieveCollection,
+      searchBook
    }, dispatch)
-);
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Bookcase);
 
