@@ -62,18 +62,19 @@ class ViewBook extends Component {
          ],
          { cancelable: false }
       );
-   } 
+   }
+
    render() {
       const {
          content, inputGroup, label, inputGroupItem,
          formGroup, switchStyle, container, summary
       } = styles;
-      const { bookInfo, actions } = this.props;
+      const { bookInfo, actions, isLoading } = this.props;
 
       if (bookInfo === null) {
          return null;
       }
-
+      
       return (
          <ScrollView>
             <HeaderScreen
@@ -138,15 +139,18 @@ class ViewBook extends Component {
                   </View>
                </View>
                
-               {/* <Note {...this.props} bookId={bookId} /> */}
+               { !isLoading && (
+                  <Note {...this.props} bookId={bookInfo.bookId} />
+               )}
             </View>
          </ScrollView>
       );
    }
 }
 
-const mapStatetoProps = ({ book }) => ({
-   bookInfo: book.bookInfo
+const mapStatetoProps = ({ book, app }) => ({
+   bookInfo: book.bookInfo,
+   isLoading: app.isLoading
 });
 
 const mapDispatchtoProps = dispatch => ({

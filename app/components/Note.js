@@ -1,20 +1,22 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, ToastAndroid, ActivityIndicator } from 'react-native';
 import { Card, Button } from 'react-native-elements';
-import moment from 'moment';
 import { NoteForm, NoteListItem } from './index';
 import { firebaseApp } from '../config/firebaseConfig';
 import { appTextColor, appFont, appColor } from '../config/constants';
-import global from '../config/global';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { 
+   toggleFormNote,
+   fetchBookNotes,
+   addBookNote
+} from '../actions/Note';
 
 class Note extends Component {
    constructor(props) {
       super(props);
       this.state = {
-         showForm: false,
          text: '',
-         notes: [],
-         isLoading: false
       };
       this.ref = firebaseApp.database().ref('notes');
       this.onShowForm = this.onShowForm.bind(this);
@@ -24,67 +26,30 @@ class Note extends Component {
    }
 
    componentDidMount() {
-      this.fetchNotes();
+      const { bookId, actions } = this.props;
+      actions.fetchBookNotes(bookId);
    }
 
    onShowForm() {
-      this.setState({
-         showForm: !this.state.showForm
-      });
+      this.props.actions.toggleFormNote();
    }
 
    onInputText(text) {
-      this.setState({
-         text
-      }, () => console.log(this.state.text));
+      this.setState({ text });
    }
 
    onCancel() {
-      this.setState({
-         text: '',
-         showForm: false
-      });
+      this.setState({ text: '' }, () => this.props.actions.toggleFormNote());
    }
 
    onSubmit = async () => {
-      const { bookId } = this.props;
+      const { bookId, actions } = this.props;
       const { text } = this.state;
-      try {
-         await this.ref.child(bookId).push({
-            name: global.user.displayName,
-            content: text,
-            datetimeNote: moment().format('YYYY-MM-DD HH:mm:ss')
-         });
-         this.setState({
-            showForm: false,
-            text: ''
-         }, () => global.setLoadingVisible(false));
-      } catch (err) {
-         global.setLoadingVisible(false);
-         ToastAndroid.show('Somethings was wrong!', ToastAndroid.LONG);
-      }
-   }
-
-   fetchNotes = async () => {
-      this.setState({ isLoading: true });
-      const { bookId } = this.props;
-      let notes = [];
-
-      this.ref.child(bookId).limitToFirst(5).once('value').then(snapshot => {
-         snapshot.forEach(childSnapshot => {
-            notes.push({
-               key: childSnapshot.key,
-               name: childSnapshot.val().name,
-               content: childSnapshot.val().content,
-               datetimeNote: childSnapshot.val().datetimeNote
-            });
-         });
-         this.setState({ notes, isLoading: false });
-      });
+      actions.addBookNote(text, bookId);
    }
    
    render() {
-      const { notes, isLoading } = this.state;
+      const { notes, isLoading, isError } = this.props;
       return (
          <View>
             <Card 
@@ -129,7 +94,7 @@ class Note extends Component {
             </Card>
       
             <NoteForm
-               isShow={this.state.showForm}
+               isShow={this.props.showForm}
                onShowForm={this.onShowForm}
                onInputText={this.onInputText}
                onSubmit={this.onSubmit}
@@ -141,7 +106,22 @@ class Note extends Component {
    }
 }
 
-export default Note;
+const mapStateToProps = ({ note }) => ({
+   notes: note.notes,
+   isLoading: note.isLoading,
+   isError: note.isError,
+   showForm: note.showForm
+});
+
+const mapDispatchToProps = dispatch => ({
+   actions: bindActionCreators({
+      fetchBookNotes,
+      toggleFormNote,
+      addBookNote
+   }, dispatch)
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Note);
 
 const styles = {
    containerStyle: {
