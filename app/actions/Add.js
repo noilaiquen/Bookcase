@@ -87,25 +87,29 @@ export const onUpload = () => (
             thumbnailLink = thumbnail;
          }
 
-         const dataPost = {
-            title,
-            author,
-            summary,
-            rating: 0,
-            is_finished: isFinished,
-            date_finished: isFinished ? dateFinished : null,
-            page: Number(page),
-            thumbnail: thumbnailLink !== null ? thumbnailLink : defaultThumbnail
-         };
-         await firebaseApp.database().ref('bookcase').child(uid).push(dataPost);
-         dispatch(uploadSuccess());
-         dispatch({ type: 'HIDE_LOADING' });
-         ToastAndroid.show('Add successfully!', ToastAndroid.SHORT);
-         
-         /* refresh bookcase */
-         DeviceEventEmitter.emit('refreshBookcase');
+         if (title !== '' && author !== '') {
+            const dataPost = {
+               title,
+               author,
+               summary,
+               rating: 0,
+               is_finished: isFinished,
+               date_finished: isFinished ? dateFinished : null,
+               page: Number(page),
+               thumbnail: thumbnailLink !== null ? thumbnailLink : defaultThumbnail
+            };
+            await firebaseApp.database().ref('bookcase').child(uid).push(dataPost);
+            dispatch(uploadSuccess());
+            dispatch({ type: 'HIDE_LOADING' });
+            ToastAndroid.show('Add successfully!', ToastAndroid.SHORT);
+            /* refresh bookcase */
+            DeviceEventEmitter.emit('refreshBookcase');
+         } else {
+            dispatch({ type: 'HIDE_LOADING' });
+            ToastAndroid.show('Title and author is required!', ToastAndroid.SHORT);
+         }
       } catch (error) {
-         console.log('---------', error);
+         // console.log('---------', error);
          dispatch({ type: 'HIDE_LOADING' });
          ToastAndroid.show('Add error!', ToastAndroid.SHORT);
       }
