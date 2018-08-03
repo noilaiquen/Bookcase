@@ -6,44 +6,19 @@ import {
    ActivityIndicator
 } from 'react-native';
 import { NoteListItem, HeaderLeft } from '../../components';
-import { firebaseApp } from '../../config/firebaseConfig';
 import { appColor, appTextColor } from '../../config/constants';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { fetchBookNotes } from '../../actions/Note';
 
-export default class ListNote extends Component {
-   constructor(props) {
-      super(props);
-      this.state = {
-         isLoading: false,
-         notes: []
-      };
-      this.ref = firebaseApp.database().ref('notes');
-   }
-
+class ListNote extends Component {
    componentDidMount() {
-      this.fectNotes();
-   }
-
-   fectNotes = async () => {
-      this.setState({ isLoading: true });
-      
       const { bookId } = this.props.navigation.state.params;
-      let notes = [];
-
-      this.ref.child(bookId).once('value').then(snapshot => {
-         snapshot.forEach(childSnapshot => {
-            notes.push({
-               key: childSnapshot.key,
-               name: childSnapshot.val().name,
-               content: childSnapshot.val().content,
-               datetimeNote: childSnapshot.val().datetimeNote
-            });
-         });
-         this.setState({ notes, isLoading: false });
-      });
+      this.props.actions.fetchBookNotes(bookId);
    }
 
    render() {
-      const { isLoading, notes } = this.state;
+      const { isLoading, notes } = this.props;
       return (
          <View style={styles.container}>
             <StatusBar barStyle="dark-content" />   
@@ -76,6 +51,19 @@ export default class ListNote extends Component {
       );
    }
 }
+
+const mapStateToProps = ({ notes, isLoading }) => ({
+   notes,
+   isLoading
+});
+
+const mapDispatchToProps = dispatch => ({
+   actions: bindActionCreators({
+      fetchBookNotes
+   }, dispatch)
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ListNote);
 
 const styles = {
    container: {

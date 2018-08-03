@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, ToastAndroid, ActivityIndicator } from 'react-native';
+import { View, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { Card, Button } from 'react-native-elements';
 import { NoteForm, NoteListItem } from './index';
 import { firebaseApp } from '../config/firebaseConfig';
@@ -27,7 +27,7 @@ class Note extends Component {
 
    componentDidMount() {
       const { bookId, actions } = this.props;
-      actions.fetchBookNotes(bookId);
+      actions.fetchBookNotes(bookId, 5);
    }
 
    onShowForm() {

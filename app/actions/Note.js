@@ -11,13 +11,18 @@ export const toggleFormNote = () => ({
    type: TOGGLE_FORM_NOTE
 });
 
-export const fetchBookNotes = bookId => (
+export const fetchBookNotes = (bookId, limit = undefined) => (
    async dispatch => {
       dispatch({ type: FETCH_NOTE });
       
       try {
          let notes = [];
-         const snapshot = await firebaseApp.database().ref('notes').child(bookId).limitToFirst(5).once('value');
+         let snapshot = null;
+         if(limit !== undefined) {
+            snapshot = await firebaseApp.database().ref('notes').child(bookId).limitToFirst(limit).once('value');
+         } else {
+            snapshot = await firebaseApp.database().ref('notes').child(bookId).once('value');
+         }
          snapshot.forEach(childSnapshot => {
             notes.push({
                key: childSnapshot.key,
@@ -48,4 +53,4 @@ export const addBookNote = (text, bookId) => (
          ToastAndroid.show('Somethings were wrong!', ToastAndroid.LONG);
       }
    }
-)
+);
