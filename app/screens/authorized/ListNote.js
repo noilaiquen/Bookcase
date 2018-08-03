@@ -52,9 +52,9 @@ class ListNote extends Component {
    }
 }
 
-const mapStateToProps = ({ notes, isLoading }) => ({
-   notes,
-   isLoading
+const mapStateToProps = ({ note }) => ({
+   notes: note.notes,
+   isLoading: note.isLoading
 });
 
 const mapDispatchToProps = dispatch => ({
