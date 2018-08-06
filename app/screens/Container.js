@@ -4,7 +4,7 @@ import {
    StatusBar
 } from 'react-native';
 import { connect } from 'react-redux';
-import { Loading, LineConnectionFail } from '../components';
+import { Loading, LineConnectionFail } from '@components';
 
 StatusBar.setBackgroundColor('transparent');
 StatusBar.setTranslucent(true);
