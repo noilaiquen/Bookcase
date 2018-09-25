@@ -8,6 +8,7 @@ import {
    Text,
    TextInput
 } from 'react-native';
+import PropTypes from 'prop-types';
 import {
    FormLabel,
    FormInput,
@@ -198,6 +199,12 @@ class Add extends Component {
       );
    }
 }
+
+Add.propTypes = {
+   add: PropTypes.object,
+   uid: PropTypes.string.isRequired,
+   actions: PropTypes.objectOf(PropTypes.func)
+};
 
 const mapDispatchToProps = dispatch => ({
    actions: bindActionCreators({

@@ -2,10 +2,12 @@ import moment from 'moment';
 import { ToastAndroid } from 'react-native';
 import { firebaseApp } from '../config/firebaseConfig';
 
-export const FETCH_NOTE = 'FETCH_NOTE';
-export const FETCH_NOTE_SUCCESS = 'FETCH_NOTE_SUCCESS';
-export const FETCH_FAILURE = 'FETCH_NOTE_FAILURE';
-export const TOGGLE_FORM_NOTE = 'TOGGLE_FORM_NOTE';
+import {
+   FETCH_NOTE,
+   FETCH_NOTE_SUCCESS,
+   FETCH_NOTE_FAILURE,
+   TOGGLE_FORM_NOTE
+} from './actionTypes';
 
 export const toggleFormNote = () => ({
    type: TOGGLE_FORM_NOTE
@@ -33,7 +35,7 @@ export const fetchBookNotes = (bookId, limit = undefined) => (
          });
          dispatch({ type: FETCH_NOTE_SUCCESS, notes });
       } catch (error) {
-         dispatch({ type: FETCH_FAILURE });
+         dispatch({ type: FETCH_NOTE_FAILURE });
       }
    }
 );

@@ -6,6 +6,7 @@ import {
    Keyboard,
    BackHandler
 } from 'react-native';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Button } from 'react-native-elements';
@@ -118,6 +119,19 @@ class SignIn extends Component {
       );
    }
 }
+
+SignIn.propTypes = {
+   isLoading: PropTypes.bool,
+   error: PropTypes.string,
+   loginEmailPassword: PropTypes.func.isRequired,
+   loginGoogle: PropTypes.func.isRequired,
+   loginFacebook: PropTypes.func.isRequired
+};
+
+SignIn.defaultProps = {
+   isLoading: false,
+   error: null,
+};
 
 const mapStateToProps = ({ auth }) => ({
    isLoading: auth.isLoading,

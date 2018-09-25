@@ -4,19 +4,13 @@ import {
    FlatList,
    DeviceEventEmitter
 } from 'react-native';
+import PropTypes from 'prop-types';
 import { SearchBar } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import {
-   BookcaseListItem,
-   BookcaseEmpty
-} from '../../components';
+import { BookcaseListItem, BookcaseEmpty } from '../../components';
 import { appFont } from '../../config/constants';
-import { 
-   retrieveCollection,
-   clearSearch,
-   searchBook
-} from '../../actions/Book';
+import { retrieveCollection, clearSearch, searchBook } from '../../actions/Book';
 
 class Bookcase extends Component {
    componentWillMount = () => {
@@ -70,6 +64,14 @@ class Bookcase extends Component {
       );
    }
 }
+
+Bookcase.propTypes = {
+   books: PropTypes.array.isRequired,
+   booksSearch: PropTypes.array.isRequired,
+   isLoading: PropTypes.bool.isRequired,
+   isSearching: PropTypes.bool.isRequired,
+   actions: PropTypes.objectOf(PropTypes.func)
+};
 
 const mapStateToProps = ({ book }) => ({
    books: book.books,

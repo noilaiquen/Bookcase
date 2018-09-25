@@ -7,7 +7,7 @@ import {
    FETCH_BOOK_ID,
    CHANGE_BOOK_INFO,
    RESET_UPDATE_STATE
-} from '../actions/Book';
+} from '../actions/actionTypes';
 
 const initState = {
    isLoading: false,

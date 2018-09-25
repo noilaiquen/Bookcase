@@ -4,7 +4,7 @@ import {
    LOGIN_SUCCESS,
    LOGIN_FAILURE,
    LOGOUT
-} from '../actions/Auth';
+} from '../actions/actionTypes';
 
 const initState = {
    isLoading: true,

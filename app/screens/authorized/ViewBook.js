@@ -9,6 +9,7 @@ import {
    Alert,
    DeviceEventEmitter
 } from 'react-native';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Icon, Rating } from 'react-native-elements';
@@ -39,6 +40,10 @@ const HeaderScreen = ({ goBack, onRemove }) => (
 );
 
 class ViewBook extends Component {
+   constructor(props) {
+      super(props);
+   }
+
    componentDidMount() {
       const { bookId } = this.props.navigation.state.params;
       const { actions } = this.props;
@@ -147,6 +152,12 @@ class ViewBook extends Component {
       );
    }
 }
+
+ViewBook.propTypes = {
+   bookInfo: PropTypes.object,
+   isLoading: PropTypes.bool.isRequired,
+   actions: PropTypes.objectOf(PropTypes.func)
+};
 
 const mapStatetoProps = ({ book, app }) => ({
    bookInfo: book.bookInfo,

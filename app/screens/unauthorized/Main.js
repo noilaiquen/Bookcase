@@ -3,11 +3,16 @@ import {
    View,
    ImageBackground
 } from 'react-native';
+import PropTypes from 'prop-types';
 import { Button } from 'react-native-elements';
 import { appColor, appTextColor, appFont } from '../../config/constants'; 
 import bg from '../../assets/main.jpg';
 
 class Main extends Component {
+   constructor(props) {
+      super(props);
+   }
+
    render() {
       return (
          <ImageBackground
@@ -37,7 +42,12 @@ class Main extends Component {
    }
 }
 
+Main.propTypes = {
+   navigation: PropTypes.object.isRequired
+}
+
 export default Main;
+
 const styles = {
    container: {
       flex: 1,

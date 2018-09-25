@@ -5,7 +5,7 @@ import {
    SET_BOOK_INFO,
    REMOVE_IMAGE,
    UPLOAD_SUCCESS
-} from '../actions/Add';
+} from '../actions/actionTypes';
 
 const currentDate = moment().format('YYYY-MM-DD');
 

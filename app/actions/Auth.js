@@ -4,11 +4,13 @@ import { AccessToken, LoginManager } from 'react-native-fbsdk';
 import firebase, { firebaseApp } from '../config/firebaseConfig';
 import { checkAuthStatusApi } from '../api/Auth';
 
-export const CHECKING_AUTH_STATUS = 'CHECKING_AUTH_STATUS';
-export const LOGIN = 'LOGIN';
-export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
-export const LOGIN_FAILURE = 'LOGIN_FAILURE';
-export const LOGOUT = 'LOGOUT';
+import {
+   CHECKING_AUTH_STATUS,
+   LOGIN,
+   LOGIN_SUCCESS,
+   LOGIN_FAILURE,
+   LOGOUT
+} from './actionTypes';
 
 export const checkAuthStatus = user => ({
    type: CHECKING_AUTH_STATUS,

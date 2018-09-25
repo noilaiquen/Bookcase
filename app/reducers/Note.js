@@ -1,9 +1,9 @@
 import {
    FETCH_NOTE,
    FETCH_NOTE_SUCCESS,
-   FETCH_FAILURE,
+   FETCH_NOTE_FAILURE,
    TOGGLE_FORM_NOTE,
-} from '../actions/Note';
+} from '../actions/actionTypes';
 
 const initState = {
    isLoading: false,
@@ -17,7 +17,7 @@ export default (state = initState, action) => {
          return { ...state, isLoading: true };
       case FETCH_NOTE_SUCCESS:
          return { ...state, isLoading: false, notes: action.notes };
-      case FETCH_FAILURE:
+      case FETCH_NOTE_FAILURE:
          return { ...state, isLoading: false };
       case TOGGLE_FORM_NOTE:  
          return { ...state, showForm: !state.showForm }

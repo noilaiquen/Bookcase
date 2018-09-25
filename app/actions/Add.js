@@ -4,13 +4,17 @@ import moment from 'moment';
 import { firebaseApp } from '../config/firebaseConfig';
 import Upload from '../api/Upload';
 
-export const GOOGLE_SEARCH = 'GOOGLE_SEARCH';
-export const GOOGLE_SEARCH_DISMISS = 'GOOGLE_SEARCH_DISMISS';
-export const SET_BOOK_INFO = 'SET_BOOK_INFO';
-export const REMOVE_IMAGE = 'REMOVE_IMAGE';
-export const UPLOAD = 'UPLOAD';
-export const UPLOAD_SUCCESS = 'UPLOAD_SUCCESS';
-export const UPLOAD_FAILURE = 'UPLOAD_FAILURE';
+import {
+   GOOGLE_SEARCH,
+   GOOGLE_SEARCH_DISMISS,
+   SET_BOOK_INFO,
+   REMOVE_IMAGE,
+   UPLOAD,
+   UPLOAD_SUCCESS,
+   UPLOAD_FAILURE,
+   HIDE_LOADING,
+   SHOW_LOADING
+} from './actionTypes';
 
 const currentDate = moment().format('YYYY-MM-DD');
 const defaultThumbnail = 'https://firebasestorage.googleapis.com/v0/b/bookcase-d1e17.appspot.com/o/thumbnail%2FNo_book_cover_lg.jpg?alt=media&token=18f98f4f-1cfa-4610-b6db-bd7478849a20';
@@ -70,7 +74,7 @@ export const googleBookSearch = text => (
 
 export const onUpload = () => (
    async (dispatch, getState) => {
-      dispatch({ type: 'SHOW_LOADING' });
+      dispatch({ type: SHOW_LOADING });
       try {
          const { uid } = getState().auth.user;
          const {
@@ -100,17 +104,17 @@ export const onUpload = () => (
             };
             await firebaseApp.database().ref('bookcase').child(uid).push(dataPost);
             dispatch(uploadSuccess());
-            dispatch({ type: 'HIDE_LOADING' });
+            dispatch({ type: HIDE_LOADING });
             ToastAndroid.show('Add successfully!', ToastAndroid.SHORT);
             /* refresh bookcase */
             DeviceEventEmitter.emit('refreshBookcase');
          } else {
-            dispatch({ type: 'HIDE_LOADING' });
+            dispatch({ type: HIDE_LOADING });
             ToastAndroid.show('Title and author is required!', ToastAndroid.SHORT);
          }
       } catch (error) {
          // console.log('---------', error);
-         dispatch({ type: 'HIDE_LOADING' });
+         dispatch({ type: HIDE_LOADING });
          ToastAndroid.show('Add error!', ToastAndroid.SHORT);
       }
    }

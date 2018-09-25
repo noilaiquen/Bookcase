@@ -5,6 +5,7 @@ import {
    StatusBar,
    ActivityIndicator
 } from 'react-native';
+import PropTypes from 'prop-types';
 import { NoteListItem, HeaderLeft } from '../../components';
 import { appColor, appTextColor } from '../../config/constants';
 import { connect } from 'react-redux';
@@ -12,6 +13,10 @@ import { bindActionCreators } from 'redux';
 import { fetchBookNotes } from '../../actions/Note';
 
 class ListNote extends Component {
+   constructor(props) {
+      super(props);
+   }
+
    componentDidMount() {
       const { bookId } = this.props.navigation.state.params;
       this.props.actions.fetchBookNotes(bookId);
@@ -51,6 +56,12 @@ class ListNote extends Component {
       );
    }
 }
+
+ListNote.propTypes = {
+   notes: PropTypes.array,
+   isLoading: PropTypes.bool,
+   actions: PropTypes.objectOf(PropTypes.func)
+};
 
 const mapStateToProps = ({ note }) => ({
    notes: note.notes,

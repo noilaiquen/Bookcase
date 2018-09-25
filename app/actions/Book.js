@@ -2,14 +2,18 @@ import { DeviceEventEmitter } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import { firebaseApp } from '../config/firebaseConfig';
 
-export const FETCH_BOOK = 'FETCH_BOOK';
-export const FETCH_BOOK_SUCCESS = 'FETCH_BOOK_SUCCESS';
-export const FETCH_FAILURE = 'FETCH_FAILURE';
-export const SEARCH_BOOK = 'SEARCH_BOOK';
-export const CLEAR_SEARCH = 'CLEAR_SEARCH';
-export const FETCH_BOOK_ID = 'FETCH_BOOK_ID';
-export const CHANGE_BOOK_INFO = 'CHANGE_BOOK_INFO';
-export const RESET_UPDATE_STATE = 'RESET_UPDATE_STATE';
+import {
+   FETCH_BOOK,
+   FETCH_BOOK_SUCCESS,
+   FETCH_FAILURE,
+   SEARCH_BOOK,
+   CLEAR_SEARCH,
+   FETCH_BOOK_ID,
+   CHANGE_BOOK_INFO,
+   RESET_UPDATE_STATE,
+   HIDE_LOADING,
+   SHOW_LOADING
+} from './actionTypes';
 
 export const fetchBook = () => ({
    type: FETCH_BOOK
@@ -88,7 +92,7 @@ export const searchBook = text => (
 export const fetchBookById = bookId => (
    async (dispatch, getState) => {
       const { uid } = getState().auth.user;
-      dispatch({ type: 'SHOW_LOADING' });
+      dispatch({ type: SHOW_LOADING });
       const snapshot = await firebaseApp.database().ref('bookcase').child(uid).child(bookId).once('value');
       if (snapshot.val()) {
          let book = snapshot.val();
@@ -97,7 +101,7 @@ export const fetchBookById = bookId => (
       } else {
          dispatch(NavigationActions.back());
       }
-      dispatch({ type: 'HIDE_LOADING' });
+      dispatch({ type: HIDE_LOADING });
    }
 );
 
@@ -108,11 +112,11 @@ export const updateBookInfo = () => (
       const { bookId } = bookInfo;
 
       if (isUpdated) {
-         dispatch({ type: 'SHOW_LOADING' });
+         dispatch({ type: SHOW_LOADING });
          delete bookInfo.bookId; //remove book ID
          await firebaseApp.database().ref('bookcase').child(uid).child(bookId).update(bookInfo);
          dispatch(resetUpdateState());
-         dispatch({ type: 'HIDE_LOADING' });
+         dispatch({ type: HIDE_LOADING });
       }
       dispatch(NavigationActions.back());
    }

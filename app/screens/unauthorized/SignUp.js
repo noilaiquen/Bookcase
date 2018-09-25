@@ -6,6 +6,7 @@ import {
    Alert,
    Keyboard
 } from 'react-native';
+import PropTypes from 'prop-types';
 import { Button } from 'react-native-elements';
 import { firebaseApp } from '../../config/firebaseConfig';
 import { HeaderLeft } from '../../components';
@@ -148,6 +149,10 @@ class SignUp extends Component {
       );
    }
 }
+
+SignUp.propTypes = {
+   navigation: PropTypes.object.isRequired
+};
 
 export default SignUp;
 

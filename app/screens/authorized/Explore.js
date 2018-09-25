@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import {
    Text,
    View,
-   Button,
-   ScrollView
 } from 'react-native';
 import { appFont } from '../../config/constants';
 
@@ -37,20 +35,18 @@ const list = [
 export default class Explore extends Component {
    render() {
       return (
-         <ScrollView contentContainerStyle={styles.container}>
-            {list.map(item => (
-               <View style={[styles.listItem, { backgroundColor: item.color }]} key={item.title}>
-                  <Text style={styles.title}>{item.title}</Text>
-               </View>
-            ))}
-         </ScrollView>
+         <View style={styles.container}>
+            <Text style={styles.textUpdate}>Updating</Text>
+         </View>
       );
    }
 }
 
 const styles = {
    container: {
-      padding: 10,
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
       backgroundColor: '#FFF'
    },
    listItem: {
@@ -66,4 +62,9 @@ const styles = {
       fontFamily: appFont,
       color: '#FFF'
    },
+   textUpdate: {
+      fontSize: 20,
+      fontFamily: appFont,
+      // color: '#'
+   }
 };

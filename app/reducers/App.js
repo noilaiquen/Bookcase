@@ -4,7 +4,7 @@ import {
    KEYBOARD_HIDE,
    SHOW_LOADING,
    HIDE_LOADING,
-} from '../actions/App';
+} from '../actions/actionTypes';
 
 const initState = {
    isLoading: false,

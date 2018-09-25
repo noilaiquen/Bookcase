@@ -5,6 +5,7 @@ import {
    ActivityIndicator,
    Image
 } from 'react-native';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Button } from 'react-native-elements';
@@ -12,6 +13,10 @@ import { appTextColor, appFont } from '../../config/constants';
 import { logout } from '../../actions/Auth';
 
 class Profile extends Component {
+   constructor(props) {
+      super(props);
+   }
+
    render() {
       const { user } = this.props;
       if (user === null) {
@@ -47,6 +52,11 @@ class Profile extends Component {
       );
    }
 }
+
+Profile.propTypes = {
+   user: PropTypes.object,
+   logout: PropTypes.func.isRequired
+};
 
 const mapStatetoProps = ({ auth }) => ({
    user: auth.user
